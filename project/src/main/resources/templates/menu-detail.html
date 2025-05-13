@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${item.nama + ' - Cafe Zayyani'}">Menu Detail - Cafe Zayyani</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header th:replace="fragments/header :: header"></header>
+
+    <!-- Menu Detail Section -->
+    <section class="menu-detail py-5">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                    <li class="breadcrumb-item"><a href="/menu">Menu</a></li>
+                    <li class="breadcrumb-item active" aria-current="page" th:text="${item.nama}">Menu Name</li>
+                </ol>
+            </nav>
+            
+            <div class="card shadow">
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <img th:src="${item.imageUrl != null ? item.imageUrl : '/images/default.jpg'}" class="img-fluid rounded-start detail-img" th:alt="${item.nama}">
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body p-4">
+                            <h1 class="card-title mb-1" th:text="${item.nama}">Menu Name</h1>
+                            
+                            <!-- Item Type Badge -->
+                            <div class="mb-3">
+                                <span class="badge" th:if="${type == 'makanan'}" 
+                                      th:classappend="${item.kategori.toString() == 'Spicy' ? 'bg-danger' : 'bg-success'}">
+                                    <i th:class="${item.kategori.toString() == 'Spicy' ? 'fas fa-pepper-hot' : 'fas fa-check'} + ' me-1'"></i>
+                                    <span th:text="${item.kategori}">Kategori</span>
+                                </span>
+                                
+                                <span class="badge" th:if="${type == 'minuman'}" 
+                                      th:classappend="${item.kategori.toString() == 'Dingin' ? 'bg-info' : 'bg-warning'}">
+                                    <i th:class="${item.kategori.toString() == 'Dingin' ? 'fas fa-snowflake' : 'fas fa-fire'} + ' me-1'"></i>
+                                    <span th:text="${item.kategori}">Kategori</span>
+                                </span>
+                                
+                                <span class="badge" th:if="${type == 'dessert'}" 
+                                      th:classappend="${item.kategori.toString() == 'Frozen' ? 'bg-info' : (item.kategori.toString() == 'Hot' ? 'bg-warning' : 'bg-primary')}">
+                                    <i th:class="${item.kategori.toString() == 'Frozen' ? 'fas fa-snowflake' : (item.kategori.toString() == 'Hot' ? 'fas fa-fire' : 'fas fa-temperature-low')} + ' me-1'"></i>
+                                    <span th:text="${item.kategori}">Kategori</span>
+                                </span>
+                            </div>
+                            
+                            <!-- Item Description -->
+                            <div class="mb-4">
+                                <p class="card-text" th:if="${type == 'minuman'}" th:text="${'Jenis: ' + item.typeMinuman + ' • Ukuran: ' + item.ukuranGelas}">Jenis & Ukuran</p>
+                                <p class="card-text" th:if="${type == 'dessert'}" th:text="${'Jenis: ' + item.tipe}">Jenis</p>
+                                <p class="card-text">
+                                    <span th:text="${'Diskon: ' + #numbers.formatDecimal(item.diskonRate * 100, 0, 'COMMA', 0, 'POINT') + '%'}">Diskon</span>
+                                </p>
+                                <h3 class="mt-2">Rp. <span th:text="${#numbers.formatDecimal(item.harga, 0, 'COMMA', 0, 'POINT')}">0</span></h3>
+                            </div>
+                            
+                            <!-- Customization Options Form -->
+                            <form th:action="@{/menu/add-to-cart}" method="post" id="addToCartForm">
+                                <input type="hidden" name="name" th:value="${item.nama}">
+                                <input type="hidden" name="type" th:value="${type}">
+                                
+                                <!-- Makanan Customization -->
+                                <div class="mb-4" th:if="${type == 'makanan' && levelPedasOptions != null}">
+                                    <h5>
+                                        <i class="fas fa-pepper-hot me-2 text-danger"></i>
+                                        Pilih Level Pedas
+                                    </h5>
+                                    <div class="level-pedas-options">
+                                        <div class="form-check" th:each="option : ${levelPedasOptions}">
+                                            <input class="form-check-input" type="radio" name="levelPedas"
+                                                   th:id="${'levelPedas-' + option}" 
+                                                   th:value="${option}"
+                                                   th:checked="${option == item.levelPedas}">
+                                            <label class="form-check-label d-flex align-items-center" th:for="${'levelPedas-' + option}">
+                                                <span class="me-2" th:text="${option}">Level</span>
+                                                <!-- Chili indicators -->
+                                                <span th:if="${option == 'Mild'}" class="text-danger">🌶️</span>
+                                                <span th:if="${option == 'Spicy'}" class="text-danger">🌶️🌶️ (+Rp3.000)</span>
+                                                <span th:if="${option == 'Extra Spicy'}" class="text-danger">🌶️🌶️🌶️ (+Rp5.000)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Minuman Customization -->
+                                <div class="mb-4" th:if="${type == 'minuman' && suhuOptions != null}">
+                                    <h5>
+                                        <i class="fas fa-temperature-high me-2 text-primary"></i>
+                                        Pilih Suhu
+                                    </h5>
+                                    <div class="suhu-options">
+                                        <div class="form-check" th:each="option : ${suhuOptions}">
+                                            <input class="form-check-input" type="radio" name="suhuOption"
+                                                   th:id="${'suhu-' + option}" 
+                                                   th:value="${option}"
+                                                   th:checked="${option == item.suhuOption}">
+                                            <label class="form-check-label d-flex align-items-center" th:for="${'suhu-' + option}">
+                                                <span class="me-2" th:text="${option}">Suhu</span>
+                                                <!-- Temperature indicators -->
+                                                <span th:if="${option == 'Hot'}" class="text-warning">🔥</span>
+                                                <span th:if="${option == 'Cold'}" class="text-info">❄️</span>
+                                                <span th:if="${option == 'Extra Ice'}" class="text-info">❄️❄️ (+Rp3.000)</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Dessert Customization -->
+                                <div class="mb-4" th:if="${type == 'dessert' && sajianOptions != null}">
+                                    <h5>
+                                        <i class="fas fa-ice-cream me-2 text-info"></i>
+                                        Pilih Sajian
+                                    </h5>
+                                    <div class="sajian-options">
+                                        <div class="form-check" th:each="option : ${sajianOptions}">
+                                            <input class="form-check-input" type="radio" name="sajian"
+                                                   th:id="${'sajian-' + option}" 
+                                                   th:value="${option}"
+                                                   th:checked="${option == item.sajian}">
+                                            <label class="form-check-label" th:for="${'sajian-' + option}" th:text="${option}">
+                                                Sajian
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quantity and Add to Cart -->
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Qty</span>
+                                            <input type="number" class="form-control" name="quantity" min="1" value="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-cart-plus me-2"></i> Tambahkan ke Keranjang
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer th:replace="fragments/footer :: footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Form validation before submission
+        document.getElementById('addToCartForm').addEventListener('submit', function(event) {
+            // For Minuman - check if suhu is selected
+            const minumanType = document.querySelector('input[name="type"][value="minuman"]');
+            const suhuOptions = document.querySelectorAll('input[name="suhuOption"]');
+            
+            if (minumanType && suhuOptions.length > 0) {
+                let suhuSelected = false;
+                suhuOptions.forEach(function(option) {
+                    if (option.checked) {
+                        suhuSelected = true;
+                    }
+                });
+                
+                if (!suhuSelected) {
+                    event.preventDefault();
+                    alert('Silakan pilih opsi suhu untuk minuman Anda!');
+                    return;
+                }
+            }
+            
+            // For Makanan - check if level pedas is selected
+            const makananType = document.querySelector('input[name="type"][value="makanan"]');
+            const levelPedasOptions = document.querySelectorAll('input[name="levelPedas"]');
+            
+            if (makananType && levelPedasOptions.length > 0) {
+                let levelSelected = false;
+                levelPedasOptions.forEach(function(option) {
+                    if (option.checked) {
+                        levelSelected = true;
+                    }
+                });
+                
+                if (!levelSelected) {
+                    event.preventDefault();
+                    alert('Silakan pilih level pedas untuk makanan Anda!');
+                    return;
+                }
+            }
+            
+            // For Dessert - check if sajian is selected
+            const dessertType = document.querySelector('input[name="type"][value="dessert"]');
+            const sajianOptions = document.querySelectorAll('input[name="sajian"]');
+            
+            if (dessertType && sajianOptions.length > 0) {
+                let sajianSelected = false;
+                sajianOptions.forEach(function(option) {
+                    if (option.checked) {
+                        sajianSelected = true;
+                    }
+                });
+                
+                if (!sajianSelected) {
+                    event.preventDefault();
+                    alert('Silakan pilih opsi sajian untuk dessert Anda!');
+                    return;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management - Cafe Zayyani Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="bg-light">
+    <!-- Admin Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/admin">
+                <i class="fas fa-coffee me-2"></i>
+                Cafe Zayyani Admin
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin/menu">Menu Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/analytics">Analytics</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <span th:text="${username}">Admin</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-white sidebar collapse">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin/menu">
+                                <i class="fas fa-utensils me-2"></i>
+                                Menu Management
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/orders">
+                                <i class="fas fa-shopping-cart me-2"></i>
+                                Orders
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/analytics">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                Analytics
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+                    <h1 class="h2">Menu Management</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMenuModal">
+                        <i class="fas fa-plus me-2"></i>Add New Menu Item
+                    </button>
+                </div>
+
+                <!-- Menu Categories -->
+                <div class="row g-4">
+                    <!-- Makanan Section -->
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-utensils me-2"></i>
+                                    Makanan
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="makanan : ${makananList}">
+                                                <td th:text="${makanan.nama}">Nama Makanan</td>
+                                                <td>
+                                                    <span class="badge" th:classappend="${makanan.kategori.toString() == 'Spicy' ? 'bg-danger' : 'bg-success'}" 
+                                                          th:text="${makanan.kategori}">Kategori</span>
+                                                </td>
+                                                <td>Rp. <span th:text="${#numbers.formatDecimal(makanan.harga, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info me-1" onclick="editPrice(this)" 
+                                                            th:data-name="${makanan.nama}" 
+                                                            th:data-price="${makanan.harga}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(this)"
+                                                            th:data-name="${makanan.nama}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Minuman Section -->
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-coffee me-2"></i>
+                                    Minuman
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Size</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="minuman : ${minumanList}">
+                                                <td th:text="${minuman.nama}">Nama Minuman</td>
+                                                <td th:text="${minuman.typeMinuman}">Type</td>
+                                                <td th:text="${minuman.ukuranGelas}">Size</td>
+                                                <td>
+                                                    <span class="badge" 
+                                                          th:classappend="${minuman.kategori.toString() == 'Dingin' ? 'bg-info' : 'bg-warning'}"
+                                                          th:text="${minuman.kategori}">Kategori</span>
+                                                </td>
+                                                <td>Rp. <span th:text="${#numbers.formatDecimal(minuman.harga, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info me-1" onclick="editPrice(this)"
+                                                            th:data-name="${minuman.nama}"
+                                                            th:data-price="${minuman.harga}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(this)"
+                                                            th:data-name="${minuman.nama}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dessert Section -->
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-ice-cream me-2"></i>
+                                    Dessert
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="dessert : ${dessertList}">
+                                                <td th:text="${dessert.nama}">Nama Dessert</td>
+                                                <td th:text="${dessert.tipe}">Type</td>
+                                                <td>
+                                                    <span class="badge" 
+                                                          th:classappend="${dessert.kategori.toString() == 'Frozen' ? 'bg-info' : (dessert.kategori.toString() == 'Hot' ? 'bg-warning' : 'bg-primary')}"
+                                                          th:text="${dessert.kategori}">Kategori</span>
+                                                </td>
+                                                <td>Rp. <span th:text="${#numbers.formatDecimal(dessert.harga, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info me-1" onclick="editPrice(this)"
+                                                            th:data-name="${dessert.nama}"
+                                                            th:data-price="${dessert.harga}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(this)"
+                                                            th:data-name="${dessert.nama}">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Menu Modal -->
+    <div class="modal fade" id="addMenuModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Menu Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="/admin/add-menu" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Menu Type</label>
+                            <select class="form-select" name="type" id="menuType" required>
+                                <option value="">Select Type</option>
+                                <option value="makanan">Makanan</option>
+                                <option value="minuman">Minuman</option>
+                                <option value="dessert">Dessert</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Price</label>
+                            <input type="number" class="form-control" name="price" min="0" step="500" required>
+                        </div>
+                        
+                        <!-- Makanan Options -->
+                        <div id="makananOptions" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" name="kategori">
+                                    <option value="Original">Original</option>
+                                    <option value="Spicy">Spicy</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Minuman Options -->
+                        <div id="minumanOptions" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label">Drink Type</label>
+                                <input type="text" class="form-control" name="minumanType" placeholder="e.g., Coffee, Non-Coffee">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Cup Size</label>
+                                <select class="form-select" name="ukuranGelas">
+                                    <option value="Small">Small</option>
+                                    <option value="Medium">Medium</option>
+                                    <option value="Large">Large</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" name="kategori">
+                                    <option value="Dingin">Dingin</option>
+                                    <option value="Hangat">Hangat</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Dessert Options -->
+                        <div id="dessertOptions" style="display: none;">
+                            <div class="mb-3">
+                                <label class="form-label">Type</label>
+                                <input type="text" class="form-control" name="tipe" placeholder="e.g., Sweet, Cold">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" name="kategori">
+                                    <option value="Frozen">Frozen</option>
+                                    <option value="Cold">Cold</option>
+                                    <option value="Hot">Hot</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Menu Item</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Price Modal -->
+    <div class="modal fade" id="editPriceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Price</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="/admin/update-price" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="name" id="editItemName">
+                        <div class="mb-3">
+                            
+                            <label class="form-label">New Price</label>
+                            <input type="number" class="form-control" name="price" id="editItemPrice" min="0" step="500" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update Price</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Show/hide menu type specific options
+        document.getElementById('menuType').addEventListener('change', function() {
+            document.getElementById('makananOptions').style.display = 'none';
+            document.getElementById('minumanOptions').style.display = 'none';
+            document.getElementById('dessertOptions').style.display = 'none';
+            
+            switch(this.value) {
+                case 'makanan':
+                    document.getElementById('makananOptions').style.display = 'block';
+                    break;
+                case 'minuman':
+                    document.getElementById('minumanOptions').style.display = 'block';
+                    break;
+                case 'dessert':
+                    document.getElementById('dessertOptions').style.display = 'block';
+                    break;
+            }
+        });
+
+        // Edit price function
+        function editPrice(button) {
+            const name = button.dataset.name;
+            const price = button.dataset.price;
+            
+            document.getElementById('editItemName').value = name;
+            document.getElementById('editItemPrice').value = price;
+            
+            new bootstrap.Modal(document.getElementById('editPriceModal')).show();
+        }
+
+        // Delete menu item function
+        function deleteMenuItem(button) {
+            const name = button.dataset.name;
+            if (confirm(`Are you sure you want to delete ${name}?`)) {
+                // Send delete request
+                fetch(`/admin/delete-menu?name=${encodeURIComponent(name)}`, {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        // Reload page on success
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete menu item');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

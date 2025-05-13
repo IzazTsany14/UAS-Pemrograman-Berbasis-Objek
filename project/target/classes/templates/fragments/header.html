@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <i class="fas fa-coffee me-2"></i>
+                    Cafe Zayyani's
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Beranda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/menu">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">Tentang Kami</a>
+                        </li>
+                        <li class="nav-item" th:if="${role == 'admin'}">
+                            <a class="nav-link" href="/admin">Admin</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex align-items-center">
+                        <div th:if="${username != null}">
+                            <a href="/cart" class="btn btn-light position-relative me-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:if="${cartCount > 0}" th:text="${cartCount}">
+                                </span>
+                            </a>
+                            <div class="dropdown d-inline-block">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user me-1"></i>
+                                    <span th:text="${username}"></span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li th:if="${role == 'admin'}"><a class="dropdown-item" href="/admin">Dashboard Admin</a></li>
+                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div th:unless="${username != null}">
+                            <a href="/login" class="btn btn-light">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>

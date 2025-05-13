@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bukti Pembayaran - Cafe Zayyani</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .receipt-container {
+                max-width: 100%;
+                box-shadow: none !important;
+                border: 1px solid #ddd;
+            }
+            body {
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - No Print -->
+    <header th:replace="fragments/header :: header" class="no-print"></header>
+
+    <!-- Receipt Section -->
+    <section class="receipt-section py-5">
+        <div class="container">
+            <div class="text-center mb-4 no-print">
+                <h1>Terima Kasih!</h1>
+                <p class="lead">Pesanan Anda telah diproses dengan sukses.</p>
+            </div>
+            
+            <!-- Print Button - No Print -->
+            <div class="d-flex justify-content-end mb-3 no-print">
+                <button onclick="window.print()" class="btn btn-primary">
+                    <i class="fas fa-print me-2"></i>Cetak Bukti Pembayaran
+                </button>
+            </div>
+            
+            <!-- Receipt Container -->
+            <div class="receipt-container bg-white p-4 shadow-sm mx-auto" style="max-width: 800px;">
+                <div class="text-center mb-4">
+                    <h2>CAFE ZAYYANI'S</h2>
+                    <p>Jl. Raya Kedung Baruk No. 98, Surabaya</p>
+                    <p>Telp: (021) 1234-5678</p>
+                </div>
+                
+                <div class="receipt-info mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>No. Pesanan:</strong> <span th:text="${order.id}">ORD-123456</span></p>
+                            <p><strong>Tanggal:</strong> <span th:text="${#temporals.format(order.orderTime, 'dd-MM-yyyy HH:mm:ss')}">01-01-2024 12:00:00</span></p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <p><strong>Kasir:</strong> <span th:text="${order.kasir}">Admin</span></p>
+                            <p><strong>Jenis Pesanan:</strong> <span th:text="${order.orderType}">Dine In</span></p>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                
+                <!-- Order Items -->
+                <div class="receipt-items mb-4">
+                    <table class="table table-borderless">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Item</th>
+                                <th class="text-center">Harga</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${order.items}">
+                                <td>
+                                    <div>
+                                        <span th:text="${item.menuItem.nama}">Item Name</span>
+                                        <small class="text-muted d-block" th:text="${item.customization}">Customization</small>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    Rp. <span th:text="${#numbers.formatDecimal(item.menuItem.totalPrice, 0, 'COMMA', 0, 'POINT')}">0</span>
+                                </td>
+                                <td class="text-center" th:text="${item.quantity}">1</td>
+                                <td class="text-end">
+                                    Rp. <span th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')}">0</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="receipt-total mb-4">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-6">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>Subtotal</td>
+                                    <td class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.subtotal, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                </tr>
+                                <tr th:if="${order.discount > 0}">
+                                    <td>Diskon</td>
+                                    <td class="text-end">- Rp. <span th:text="${#numbers.formatDecimal(order.discount, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Total</th>
+                                    <th class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}">0</span></th>
+                                </tr>
+                                <tr th:if="${order.paymentMethod == 'Cash'}">
+                                    <td>Tunai</td>
+                                    <td class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.amountPaid, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                </tr>
+                                <tr th:if="${order.paymentMethod == 'Cash'}">
+                                    <td>Kembalian</td>
+                                    <td class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.change, 0, 'COMMA', 0, 'POINT')}">0</span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="receipt-footer text-center">
+                    <p><strong>Metode Pembayaran:</strong> <span th:text="${order.paymentMethod}">Cash</span></p>
+                    <hr>
+                    <div class="wifi-info mb-3">
+                        <p class="mb-0"><strong>WiFi:</strong> Cafe_Zayyani</p>
+                        <p><strong>Password:</strong> Beliduluseratus</p>
+                    </div>
+                    <p class="thanks-message">Makasih udah mampir! Kopinya abis, tapi vibes-nya semoga tetap nyantol!</p>
+                </div>
+            </div>
+            
+            <!-- Actions - No Print -->
+            <div class="d-flex justify-content-center mt-4 no-print">
+                <a href="/menu" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-utensils me-1"></i>Pesan Lagi
+                </a>
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="fas fa-home me-1"></i>Kembali ke Beranda
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer - No Print -->
+    <footer th:replace="fragments/footer :: footer" class="no-print"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>

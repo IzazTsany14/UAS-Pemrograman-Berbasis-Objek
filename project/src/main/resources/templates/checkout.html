@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Cafe Zayyani</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header th:replace="fragments/header :: header"></header>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section py-5">
+        <div class="container">
+            <h1 class="mb-4">
+                <i class="fas fa-credit-card me-2"></i>
+                Checkout
+            </h1>
+            
+            <!-- Checkout Form -->
+            <form th:action="@{/checkout/place-order}" method="post" id="checkoutForm">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Order Type -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Jenis Pesanan</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <div class="form-check order-type-card">
+                                            <input class="form-check-input" type="radio" name="orderType" 
+                                                   id="dineIn" value="Dine In" checked>
+                                            <label class="form-check-label w-100" for="dineIn">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center py-4">
+                                                        <i class="fas fa-utensils fa-2x mb-3 text-primary"></i>
+                                                        <h5>Dine In</h5>
+                                                        <p class="text-muted mb-0">Makan di tempat</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check order-type-card">
+                                            <input class="form-check-input" type="radio" name="orderType" 
+                                                   id="takeAway" value="Take Away">
+                                            <label class="form-check-label w-100" for="takeAway">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center py-4">
+                                                        <i class="fas fa-shopping-bag fa-2x mb-3 text-primary"></i>
+                                                        <h5>Take Away</h5>
+                                                        <p class="text-muted mb-0">Bawa pulang</p>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Method -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Metode Pembayaran</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row row-cols-1 row-cols-md-3 g-3">
+                                    <div class="col">
+                                        <div class="form-check payment-method-card">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" 
+                                                   id="cash" value="Cash" checked>
+                                            <label class="form-check-label w-100" for="cash">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center py-3">
+                                                        <i class="fas fa-money-bill-wave fa-2x mb-2 text-success"></i>
+                                                        <h6>Cash</h6>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check payment-method-card">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" 
+                                                   id="qris" value="QRIS">
+                                            <label class="form-check-label w-100" for="qris">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center py-3">
+                                                        <i class="fas fa-qrcode fa-2x mb-2 text-primary"></i>
+                                                        <h6>QRIS</h6>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-check payment-method-card">
+                                            <input class="form-check-input" type="radio" name="paymentMethod" 
+                                                   id="card" value="Card">
+                                            <label class="form-check-label w-100" for="card">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center py-3">
+                                                        <i class="fas fa-credit-card fa-2x mb-2 text-info"></i>
+                                                        <h6>Kartu</h6>
+                                                    </div>
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Cash Amount Input -->
+                                <div id="cashAmountSection" class="mt-4">
+                                    <label for="amountPaid" class="form-label">Jumlah Uang Tunai</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="number" class="form-control" id="amountPaid" name="amountPaid"
+                                               th:value="${discountedTotal}" th:min="${discountedTotal}" step="1000">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Order Items Review -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Review Pesanan</h5>
+                                <a href="/cart" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit me-1"></i>Edit
+                                </a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Jumlah</th>
+                                                <th class="text-end">Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="item : ${cart.items}">
+                                                <td>
+                                                    <div>
+                                                        <h6 class="mb-0" th:text="${item.menuItem.nama}">Item Name</h6>
+                                                        <small class="text-muted" th:text="${item.customization}">Customization</small>
+                                                    </div>
+                                                </td>
+                                                <td th:text="${item.quantity}">1</td>
+                                                <td class="text-end">
+                                                    Rp. <span th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')}">0</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Order Summary -->
+                    <div class="col-lg-4">
+                        <div class="card shadow-sm">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Ringkasan Pesanan</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span>Rp. <span th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')}">0</span></span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2" th:if="${hasDiscount}">
+                                    <span>Diskon (10%):</span>
+                                    <span class="text-success">- Rp. <span th:text="${#numbers.formatDecimal(discount, 0, 'COMMA', 0, 'POINT')}">0</span></span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <strong>Total:</strong>
+                                    <strong>Rp. <span th:text="${#numbers.formatDecimal(discountedTotal, 0, 'COMMA', 0, 'POINT')}">0</span></strong>
+                                </div>
+                                
+                                <div class="d-grid mt-3">
+                                    <button type="submit" class="btn btn-primary btn-lg" id="confirmOrderBtn">
+                                        <i class="fas fa-check-circle me-2"></i>Konfirmasi Pesanan
+                                    </button>
+                                </div>
+                                
+                                <div class="info-box bg-light p-3 mt-3 rounded">
+                                    <h6><i class="fas fa-info-circle me-2"></i>Informasi</h6>
+                                    <ul class="small mb-0">
+                                        <li>Diskon 10% untuk pembelian di atas Rp50.000</li>
+                                        <li>Wifi: Cafe_Zayyani</li>
+                                        <li>Password: Beliduluseratus</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer th:replace="fragments/footer :: footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Show/hide cash amount input based on payment method
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                const cashAmountSection = document.getElementById('cashAmountSection');
+                if (this.value === 'Cash') {
+                    cashAmountSection.style.display = 'block';
+                } else {
+                    cashAmountSection.style.display = 'none';
+                }
+            });
+        });
+        
+        // Initialize - check if Cash is selected
+        if (document.getElementById('cash').checked) {
+            document.getElementById('cashAmountSection').style.display = 'block';
+        } else {
+            document.getElementById('cashAmountSection').style.display = 'none';
+        }
+        
+        // Form validation
+        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission initially
+            
+            const cashSelected = document.getElementById('cash').checked;
+            const amountPaid = parseFloat(document.getElementById('amountPaid').value);
+            const totalAmount = /*[[${discountedTotal}]]*/[];
+            
+            if (cashSelected && amountPaid < totalAmount) {
+                alert('Jumlah uang tunai yang dimasukkan kurang dari total pembayaran.');
+                return;
+            }
+            
+            // Show confirmation dialog
+            if (confirm('Apakah Anda yakin ingin melanjutkan pemesanan?')) {
+                this.submit(); // Submit the form if confirmed
+            }
+        });
+    </script>
+</body>
+</html>

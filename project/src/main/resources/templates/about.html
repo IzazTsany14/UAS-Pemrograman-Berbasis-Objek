@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tentang Kami - Cafe Zayyani</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header th:replace="fragments/header :: header"></header>
+
+    <!-- About Banner -->
+    <section class="about-banner py-5 bg-light text-center">
+        <div class="container">
+            <h1 class="display-4">Tentang Kami</h1>
+            <p class="lead">Mengenal lebih dekat dengan Cafe Zayyani's</p>
+        </div>
+    </section>
+    
+    <!-- About Story -->
+    <section class="about-story py-5">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg" alt="Cafe Story" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-lg-6">
+                    <h2>Cerita Kami</h2>
+                    <p class="lead">Sejak 2020, Cafe Zayyani's hadir untuk menjadi tempat favorit pertemuan dan bersantai.</p>
+                    <p>Berawal dari kecintaan kami terhadap kopi dan kuliner, Cafe Zayyani's didirikan dengan tujuan untuk menyajikan pengalaman kuliner yang berkualitas dengan harga yang terjangkau. Kami percaya bahwa makanan dan minuman yang enak tidak harus mahal.</p>
+                    <p>Nama "Zayyani's" terinspirasi dari kata "Zayyan" yang berarti indah dan elegan. Kami berusaha untuk menerapkan filosofi ini dalam setiap aspek cafe kami, dari menu yang disajikan hingga pelayanan yang diberikan.</p>
+                </div>
+            </div>
+            
+            <div class="row align-items-center flex-row-reverse">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://images.pexels.com/photos/2074130/pexels-photo-2074130.jpeg" alt="Our Mission" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-lg-6">
+                    <h2>Misi Kami</h2>
+                    <p class="lead">Menciptakan pengalaman kuliner yang memorable bagi setiap pengunjung.</p>
+                    <p>Kami berkomitmen untuk selalu:</p>
+                    <ul class="check-list">
+                        <li>Menggunakan bahan-bahan berkualitas tinggi dalam setiap menu kami</li>
+                        <li>Menyajikan hidangan dengan cita rasa authentic dan konsisten</li>
+                        <li>Memberikan pelayanan yang ramah dan profesional</li>
+                        <li>Menciptakan suasana yang nyaman untuk berbagai keperluan, dari rapat bisnis hingga kumpul santai dengan teman</li>
+                        <li>Terus berinovasi dalam menu dan layanan kami</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Our Team -->
+    <section class="our-team py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Tim Kami</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100">
+                        <img src="https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg" class="card-img-top" alt="Izaz Tsany">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Izaz Tsany Rismawan</h5>
+                            <p class="text-muted">Founder & Head Chef</p>
+                            <p class="card-text">Mencintai dunia kuliner sejak kecil, Izaz membawa passion dan kreativitasnya ke dalam setiap menu Cafe Zayyani's.</p>
+                            <div class="social-icons mt-3">
+                                <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="text-danger me-2"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="text-info"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100">
+                        <img src="https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg" class="card-img-top" alt="Budi Santoso">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Budi Santoso</h5>
+                            <p class="text-muted">Coffee Expert</p>
+                            <p class="card-text">Dengan pengalaman lebih dari 10 tahun di dunia kopi, Budi memastikan setiap cangkir kopi yang disajikan memiliki kualitas terbaik.</p>
+                            <div class="social-icons mt-3">
+                                <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="text-danger me-2"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="text-info"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card team-card h-100">
+                        <img src="https://images.pexels.com/photos/773371/pexels-photo-773371.jpeg" class="card-img-top" alt="Sarah Amalia">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Sarah Amalia</h5>
+                            <p class="text-muted">Customer Relations</p>
+                            <p class="card-text">Sarah memastikan setiap pengunjung mendapatkan pengalaman terbaik selama berada di Cafe Zayyani's.</p>
+                            <div class="social-icons mt-3">
+                                <a href="#" class="text-primary me-2"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="text-danger me-2"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="text-info"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Cafe Gallery -->
+    <section class="cafe-gallery py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Galeri Cafe</h2>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <img src="https://images.pexels.com/photos/1855214/pexels-photo-1855214.jpeg" alt="Cafe Interior" class="img-fluid rounded gallery-img">
+                </div>
+                <div class="col-md-4">
+                    <img src="https://images.pexels.com/photos/312418/pexels-photo-312418.jpeg" alt="Coffee" class="img-fluid rounded gallery-img">
+                </div>
+                <div class="col-md-4">
+                    <img src="https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg" alt="Food" class="img-fluid rounded gallery-img">
+                </div>
+                <div class="col-md-6">
+                    <img src="https://images.pexels.com/photos/2074130/pexels-photo-2074130.jpeg" alt="Cafe Ambience" class="img-fluid rounded gallery-img">
+                </div>
+                <div class="col-md-6">
+                    <img src="https://images.pexels.com/photos/1307698/pexels-photo-1307698.jpeg" alt="Cafe Service" class="img-fluid rounded gallery-img">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Visit Us Section -->
+    <section class="visit-us py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2>Kunjungi Kami</h2>
+                    <p class="lead">Kami menunggu kehadiran Anda di Cafe Zayyani's.</p>
+                    <div class="info-items">
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5>Alamat</h5>
+                                <p class="mb-0">Jl. Raya Kedung Baruk No. 98, Surabaya</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-clock fa-2x text-primary"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5>Jam Operasional</h5>
+                                <p class="mb-0">Senin - Jumat: 08:00 - 22:00<br>Sabtu - Minggu: 10:00 - 23:00</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-phone fa-2x text-primary"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h5>Kontak</h5>
+                                <p class="mb-0">Telepon: (021) 1234-5678<br>Email: info@cafezayyani.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card shadow">
+                        <div class="card-body p-0">
+                            <!-- Placeholder for map (in real app, embed Google Map) -->
+                            <div class="map-placeholder bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 350px;">
+                                <div class="text-center">
+                                    <i class="fas fa-map-marked-alt fa-4x mb-3"></i>
+                                    <h4>Peta Lokasi</h4>
+                                    <p class="mb-0">Google Maps akan ditampilkan di sini</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer th:replace="fragments/footer :: footer"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html>
