@@ -1,5 +1,5 @@
 #Projek Kelompok 2
-# 📚 Caffe Zayani's
+# 📚 Caffe Zayyani's
 
 Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 
@@ -33,7 +33,7 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 
 ## Our Team
 
-| [<img src="https://avatars.githubusercontent.com/u/181320081?v=4" width="250"/>](https://github.com/Nklasyfa) | [<img src="https://avatars.githubusercontent.com/u/192308291?v=4" width="250"/>](https://github.com/IzazTsany14) |[<img src="https://avatars.githubusercontent.com/u/207808411?v=4" width="250"/>](https://github.com/kzxkg.) 
+| [<img src="https://avatars.githubusercontent.com/u/181320081?v=4" width="250"/>](https://github.com/Nklasyfa) | [<img src="https://avatars.githubusercontent.com/u/192308291?v=4" width="250"/>](https://github.com/IzazTsany14) |[<img src="https://avatars.githubusercontent.com/u/207808411?v=4" width="250"/>](https://github.com/kzxkg) 
 | --- | --- | --- |
 | **Nakula Syafa Saputra** | **Izaz Tsany Rismawan** | **Gofur Aryan Nur Karim** |
 
