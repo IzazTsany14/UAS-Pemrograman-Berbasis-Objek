@@ -9,9 +9,9 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 | NAMA | NIM |
 |--------|--------|
 | **Nakula Syafa Saputra** | 24111814... |
-| **Muhammad Reyhan Sheva Risqulah** | 24111814... |
+| **Muhammad Reyhan Sheva Risqullah** | 24111814... |
 | **Fearda Agnessiya Putri Dardiri** | 24111814... |
-| **Izaz Tsani Rismawan** | 24111814... |
+| **Izaz Tsany Rismawan** | 24111814... |
 | **Gofur Aryan Nur Karim** |  24111814031 |
 | **Lufita Setiati** |  241118141... |
 | **Nur Rohmatin Asy-Syifa** |  24111814... |
@@ -30,3 +30,17 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 - 🏷️ Daftar yang sedang **Diskon**
 - 🧾 Cetak Struk Pembelian
 - 🛒 Keranjang Pembelian
+
+## Our Team
+
+| [<img src="https://avatars.githubusercontent.com/u/181320081?v=4" width="250"/>](https://github.com/Nklasyfa) | [<img src="https://avatars.githubusercontent.com/u/192308291?v=4" width="250"/>](https://github.com/IzazTsany14) |[<img src="https://avatars.githubusercontent.com/u/207808411?v=4" width="250"/>](https://github.com/kzxkg.) 
+| --- | --- | --- |
+| **Nakula Syafa Saputra** | **Izaz Tsany Rismawan** | **Gofur Aryan Nur Karim** |
+
+| [<img src="https://avatars.githubusercontent.com/u/207851984?v=4" width="250"/>](https://github.com/ShevaFortz) |[<img src="https://avatars.githubusercontent.com/u/208031707?v=4" width="250"/>](https://github.com/feardaa) | [<img src="https://avatars.githubusercontent.com/u/207815793?v=4" width="250"/>](https://github.com/lupitaaasetia) |
+| --- | --- | --- |
+| **Reyhan Sheva Risqullah** | **Fearda Agnessiya Putri Dardiri** | **Lufita Setiati** |
+
+| [<img src="https://avatars.githubusercontent.com/u/207960208?v=4" width="250"/>](https://github.com/nurasyifaaa) |[<img src="https://avatars.githubusercontent.com/u/182313276?v=4" width="250"/>](https://github.com/AxelPra) | 
+| --- | --- |
+| **Nur Rohmatin Asy-Syifa** | **Muhammad Amrullah** |
