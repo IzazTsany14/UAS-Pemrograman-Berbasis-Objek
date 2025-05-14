@@ -23,10 +23,10 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 
 - 🔎 Cari berdasarkan **Judul**
 - 🎭 Cari berdasarkan **Genre**
-- 📋 Tampilkan **Semua Novel**
-- 💰 Tampilkan Novel urut berdasarkan **Harga**
-- 🌟 Daftar **Novel Best Seller**
-- 📱 Daftar **Novel Digital**
-- 🏷️ Daftar Novel yang sedang **Diskon**
+- 📋 Tampilkan **Semua Menu**
+- 💰 Tampilkan Menu urut berdasarkan **Harga**
+- 🌟 Daftar **Makanan**
+- 📱 Daftar **Minuman**
+- 🏷️ Daftar yang sedang **Diskon**
 - 🧾 Cetak Struk Pembelian
 - 🛒 Keranjang Pembelian
