@@ -8,14 +8,14 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
  ##  Contributor
 | NAMA | NIM |
 |--------|--------|
-| **Nakula Syafa Saputra** | 24111814... |
-| **Muhammad Reyhan Sheva Risqullah** | 24111814... |
+| **Nakula Syafa Saputra** | 24111814116 |
+| **Muhammad Reyhan Sheva RizQullah** | 24111814124 |
 | **Fearda Agnessiya Putri Dardiri** | 2411184138 |
-| **Izaz Tsany Rismawan** | 24111814... |
+| **Izaz Tsany Rismawan** | 24111814088 |
 | **Gofur Aryan Nur Karim** |  24111814031 |
-| **Lufita Setiati** |  241118141... |
-| **Nur Rohmatin Asy-Syifa** |  24111814... |
-| **Muhammad Amrullah Widyapratama** |  24111814... |
+| **Lufita Setiati** |  24111814057 |
+| **Nur Rohmatin Asy-Syifa** |  24111814111 |
+| **Muhammad Amrullah Widyapratama** |  24111814136 |
 
 ---
 
@@ -39,7 +39,7 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 
 | [<img src="https://avatars.githubusercontent.com/u/207851984?v=4" width="250"/>](https://github.com/ShevaFortz) |[<img src="https://avatars.githubusercontent.com/u/208031707?v=4" width="250"/>](https://github.com/feardaa) | [<img src="https://avatars.githubusercontent.com/u/207815793?v=4" width="250"/>](https://github.com/lupitaaasetia) |
 | --- | --- | --- |
-| **Reyhan Sheva Risqullah** | **Fearda Agnessiya Putri Dardiri** | **Lufita Setiati** |
+| **Reyhan Sheva RizQullah** | **Fearda Agnessiya Putri Dardiri** | **Lufita Setiati** |
 
 | [<img src="https://avatars.githubusercontent.com/u/207960208?v=4" width="250"/>](https://github.com/nurasyifaaa) |[<img src="https://avatars.githubusercontent.com/u/182313276?v=4" width="250"/>](https://github.com/AxelPra) | 
 | --- | --- |
