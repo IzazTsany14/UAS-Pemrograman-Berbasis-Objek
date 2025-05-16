@@ -10,7 +10,7 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 |--------|--------|
 | **Nakula Syafa Saputra** | 24111814... |
 | **Muhammad Reyhan Sheva Risqullah** | 24111814... |
-| **Fearda Agnessiya Putri Dardiri** | 24111814... |
+| **Fearda Agnessiya Putri Dardiri** | 2411184138 |
 | **Izaz Tsany Rismawan** | 24111814... |
 | **Gofur Aryan Nur Karim** |  24111814031 |
 | **Lufita Setiati** |  241118141... |
