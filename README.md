@@ -1,7 +1,7 @@
-#Projek Kelompok 2
+
 # 📚 Caffe Zayyani's
 
-Aplikasi berbasis Java untuk mengelola dan menampilkan data...
+Aplikasi berbasis Java untuk mengelola dan menampilkan data 
 
 ---
 
@@ -21,13 +21,14 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 
 ## 🔍 Fitur
 
-- 🔎 Cari berdasarkan **Judul**
-- 🎭 Cari berdasarkan **Genre**
+- 🔎 Cari berdasarkan **Menu**
+- 🎭 Cari berdasarkan **Kategori**
 - 📋 Tampilkan **Semua Menu**
+- 📋 Tampilkan **Dashboard**
 - 💰 Tampilkan Menu urut berdasarkan **Harga**
 - 🌟 Daftar **Makanan**
 - 📱 Daftar **Minuman**
-- 🏷️ Daftar yang sedang **Diskon**
+- 🏷️ Daftar **Dessert**
 - 🧾 Cetak Struk Pembelian
 - 🛒 Keranjang Pembelian
 
