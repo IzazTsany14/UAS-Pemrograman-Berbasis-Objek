@@ -33,7 +33,7 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data...
 
 ## Our Team
 
-| [<img src="https://i.pinimg.com/474x/08/ed/f7/08edf75294fd6eb21fc50f8e6b554f3b.jpg" width="250"/>](https://github.com/Nklasyfa) | [<img src="[https://avatars.githubusercontent.com/u/192308291?v=4](https://i.pinimg.com/736x/bf/23/f3/bf23f368dcff1f9cdbc6ed78a9a7e92d.jpg)" width="250"/>](https://github.com/IzazTsany14) |[<img src="https://avatars.githubusercontent.com/u/207808411?v=4" width="250"/>](https://github.com/Gofurryan) 
+| [<img src="https://i.pinimg.com/474x/08/ed/f7/08edf75294fd6eb21fc50f8e6b554f3b.jpg" width="250"/>](https://github.com/Nklasyfa) | [<img src="[https://i.pinimg.com/736x/bf/23/f3/bf23f368dcff1f9cdbc6ed78a9a7e92d.jpg]" width="250"/>](https://github.com/IzazTsany14) |[<img src="https://avatars.githubusercontent.com/u/207808411?v=4" width="250"/>](https://github.com/Gofurryan) 
 | --- | --- | --- |
 | **Nakula Syafa Saputra** | **Izaz Tsany Rismawan** | **Gofur Aryan Nur Karim** |
 
