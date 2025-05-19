@@ -44,8 +44,9 @@ public class AdminController {
         
         // Calculate total revenue
         double totalRevenue = orders.stream()
-            .mapToDouble(Order::getTotal)
-            .sum();
+        .mapToDouble(Order::getTotal) // Error disini
+        .sum();
+    
             
         // Get sales by category
         // Get sales by category
