@@ -55,38 +55,34 @@ public class CheckoutController {
     }
     
     @PostMapping("/place-order")
-    public String placeOrder(@RequestParam String orderType, 
-                            @RequestParam String paymentMethod,
-                            @RequestParam(required = false) Double amountPaid,
-                            @RequestParam(required = false) List<String> selectedItems,
-                            HttpSession session) {
-        
-        if (session.getAttribute("username") == null) {
-            return "redirect:/login";
-        }
-        
-        Cart cart = cartService.getCart();
-        String username = (String) session.getAttribute("username");
-        
-        // Create and save the order for selected items only
-        Order order = orderService.createOrder(cart, orderType, paymentMethod, username);
-        
-        // Process payment if applicable
-        if (amountPaid != null) {
-            orderService.processPayment(order, amountPaid);
-        }
-        
-        // Store order ID in session for receipt
-        session.setAttribute("lastOrderId", order.getId());
-        
-        // Remove only the selected items from cart
-        if (selectedItems != null && !selectedItems.isEmpty()) {
-            cartService.removeSelectedItems(selectedItems);
-        } else {
-            // If no specific items selected, clear entire cart
-            cartService.clearCart();
-        }
-        
-        return "redirect:/menu";
+public String placeOrder(@RequestParam String orderType, 
+                        @RequestParam String paymentMethod,
+                        @RequestParam(required = false) Double amountPaid,
+                        @RequestParam(required = false) List<String> selectedItems,
+                        HttpSession session) {
+    if (session.getAttribute("username") == null) {
+        return "redirect:/login";
     }
+    
+    Cart cart = cartService.getCart();
+    String username = (String) session.getAttribute("username");
+    
+    // Create and save the order for selected items only
+    Order order = orderService.createOrder(cart, orderType, paymentMethod, username);
+    
+    // Process payment if applicable
+    if (amountPaid != null) {
+        orderService.processPayment(order, amountPaid);
+    }
+    
+    // Remove only the selected items from cart
+    if (selectedItems != null && !selectedItems.isEmpty()) {
+        cartService.removeSelectedItems(selectedItems);
+    } else {
+        cartService.clearCart();
+    }
+    
+    // Redirect langsung ke halaman nota
+    return "redirect:/admin/receipt/" + order.getId();
+}
 }
