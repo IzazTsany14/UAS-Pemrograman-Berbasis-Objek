@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import jakarta.annotation.PostConstruct;
 
@@ -19,22 +18,25 @@ public class MenuService {
 
     @PostConstruct
     public void init() {
-        // Initialize menu items
-        minumanList.add(new Minuman("Brown Sugar", "Non Coffee", "Large", 25000, 1, Menu.KategoriMinuman.DINGIN));
-        minumanList.add(new Minuman("Caramel Macchiato", "Cold Brew", "Medium", 20000, 1, Menu.KategoriMinuman.DINGIN));
-        minumanList.add(new Minuman("Americano Coffee", "Coffee", "Small", 15000, 1, Menu.KategoriMinuman.HANGAT));
-        minumanList.add(new Minuman("Matcha Latte", "Non Coffee", "Medium", 9000, 1, Menu.KategoriMinuman.DINGIN));
-        minumanList.add(new Minuman("Taro", "Non Coffee", "Small", 13000, 1, Menu.KategoriMinuman.DINGIN));
+    // Initialize menu items dengan imageUrl default
+    // Minuman
+    minumanList.add(new Minuman("Brown Sugar", "Non Coffee", "Large", 25000, 1, Menu.KategoriMinuman.DINGIN, ""));
+    minumanList.add(new Minuman("Caramel Macchiato", "Cold Brew", "Medium", 20000, 1, Menu.KategoriMinuman.DINGIN, ""));
+    minumanList.add(new Minuman("Americano Coffee", "Coffee", "Small", 15000, 1, Menu.KategoriMinuman.HANGAT, ""));
+    minumanList.add(new Minuman("Matcha Latte", "Non Coffee", "Medium", 9000, 1, Menu.KategoriMinuman.DINGIN, ""));
+    minumanList.add(new Minuman("Taro", "Non Coffee", "Small", 13000, 1, Menu.KategoriMinuman.DINGIN, ""));
 
-        makananList.add(new Makanan("Nasi Goreng", 30000, 1, Menu.KategoriMakanan.ORIGINAL));
-        makananList.add(new Makanan("Mie Ayam", 25000, 1, Menu.KategoriMakanan.ORIGINAL));
-        makananList.add(new Makanan("Ayam Geprek", 28000, 1, Menu.KategoriMakanan.SPICY));
-        makananList.add(new Makanan("Ayam Goreng", 26000, 1, Menu.KategoriMakanan.ORIGINAL));
+    // Makanan
+    makananList.add(new Makanan("Nasi Goreng", 30000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
+    makananList.add(new Makanan("Mie Ayam", 25000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
+    makananList.add(new Makanan("Ayam Geprek", 28000, 1, Menu.KategoriMakanan.SPICY, ""));
+    makananList.add(new Makanan("Ayam Goreng", 26000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
 
-        dessertList.add(new Dessert("Cheesecake", "Sweet", 18000, 1, Menu.KategoriDessert.COLD));
-        dessertList.add(new Dessert("Chocolate Lava", "Sweet", 20000, 1, Menu.KategoriDessert.HOT));
-        dessertList.add(new Dessert("Ice Cream Sundae", "Cold", 15000, 1, Menu.KategoriDessert.FROZEN));
-        dessertList.add(new Dessert("Tiramisu", "Sweet", 14000, 1, Menu.KategoriDessert.HOT));
+    // Dessert
+    dessertList.add(new Dessert("Cheesecake", "Sweet", 18000, 1, Menu.KategoriDessert.COLD, ""));
+    dessertList.add(new Dessert("Chocolate Lava", "Sweet", 20000, 1, Menu.KategoriDessert.HOT, ""));
+    dessertList.add(new Dessert("Ice Cream Sundae", "Cold", 15000, 1, Menu.KategoriDessert.FROZEN, ""));
+    dessertList.add(new Dessert("Tiramisu", "Sweet", 14000, 1, Menu.KategoriDessert.HOT, ""));
     }
 
     public List<Minuman> getAllMinuman() {
@@ -142,16 +144,14 @@ public class MenuService {
         return updated;
     }
 
-    public void addMakanan(String name, double price, Menu.KategoriMakanan kategori) {
-        makananList.add(new Makanan(name, price, 1, kategori));
+    public void addMakanan(String name, double price, Menu.KategoriMakanan kategori, String imageUrl) {
+    makananList.add(new Makanan(name, price, 1, kategori, imageUrl));
     }
-
-    public void addMinuman(String name, String type, String size, double price, Menu.KategoriMinuman kategori) {
-        minumanList.add(new Minuman(name, type, size, price, 1, kategori));
+    public void addMinuman(String name, String type, String size, double price, Menu.KategoriMinuman kategori, String imageUrl) {
+        minumanList.add(new Minuman(name, type, size, price, 1, kategori, imageUrl));
     }
-
-    public void addDessert(String name, String type, double price, Menu.KategoriDessert kategori) {
-        dessertList.add(new Dessert(name, type, price, 1, kategori));
+    public void addDessert(String name, String type, double price, Menu.KategoriDessert kategori, String imageUrl) {
+        dessertList.add(new Dessert(name, type, price, 1, kategori, imageUrl));
     }
 
     // Method to customize Minuman
