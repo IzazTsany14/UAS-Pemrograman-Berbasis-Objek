@@ -25,10 +25,8 @@
     </style>
 </head>
 <body>
-    <!-- Header - No Print -->
     <header th:replace="fragments/header :: header" class="no-print"></header>
 
-    <!-- Receipt Section -->
     <section class="receipt-section py-5">
         <div class="container">
             <div class="text-center mb-4 no-print">
@@ -36,14 +34,12 @@
                 <p class="lead">Pesanan Anda telah diproses dengan sukses.</p>
             </div>
             
-            <!-- Print Button - No Print -->
             <div class="d-flex justify-content-end mb-3 no-print">
                 <button onclick="window.print()" class="btn btn-primary">
                     <i class="fas fa-print me-2"></i>Cetak Bukti Pembayaran
                 </button>
             </div>
             
-            <!-- Receipt Container -->
             <div class="receipt-container bg-white p-4 shadow-sm mx-auto" style="max-width: 800px;">
                 <div class="text-center mb-4">
                     <h2>CAFE ZAYYANI'S</h2>
@@ -65,7 +61,6 @@
                     <hr>
                 </div>
                 
-                <!-- Order Items -->
                 <div class="receipt-items mb-4">
                     <table class="table table-borderless">
                         <thead class="table-light">
@@ -78,19 +73,10 @@
                         </thead>
                         <tbody>
                             <tr th:each="item : ${order.items}">
-                                <td>
-                                    <div>
-                                        <span th:text="${item.menuItem.nama}">Item Name</span>
-                                        <small class="text-muted d-block" th:text="${item.customization}">Customization</small>
-                                    </div>
-                                </td>
-                                <td class="text-center">
-                                    Rp. <span th:text="${#numbers.formatDecimal(item.menuItem.totalPrice, 0, 'COMMA', 0, 'POINT')}">0</span>
-                                </td>
+                                <td th:text="${item.menuItem.nama}">Item Name</td>
+                                <td class="text-center">Rp. <span th:text="${#numbers.formatDecimal(item.menuItem.totalPrice, 0, 'COMMA', 0, 'POINT')}">0</span></td>
                                 <td class="text-center" th:text="${item.quantity}">1</td>
-                                <td class="text-end">
-                                    Rp. <span th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')}">0</span>
-                                </td>
+                                <td class="text-end">Rp. <span th:text="${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 0, 'POINT')}">0</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -112,14 +98,6 @@
                                     <th>Total</th>
                                     <th class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 0, 'POINT')}">0</span></th>
                                 </tr>
-                                <tr th:if="${order.paymentMethod == 'Cash'}">
-                                    <td>Tunai</td>
-                                    <td class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.amountPaid, 0, 'COMMA', 0, 'POINT')}">0</span></td>
-                                </tr>
-                                <tr th:if="${order.paymentMethod == 'Cash'}">
-                                    <td>Kembalian</td>
-                                    <td class="text-end">Rp. <span th:text="${#numbers.formatDecimal(order.change, 0, 'COMMA', 0, 'POINT')}">0</span></td>
-                                </tr>
                             </table>
                         </div>
                     </div>
@@ -136,7 +114,6 @@
                 </div>
             </div>
             
-            <!-- Actions - No Print -->
             <div class="d-flex justify-content-center mt-4 no-print">
                 <a href="/menu" class="btn btn-outline-primary me-2">
                     <i class="fas fa-utensils me-1"></i>Pesan Lagi
@@ -148,10 +125,8 @@
         </div>
     </section>
 
-    <!-- Footer - No Print -->
     <footer th:replace="fragments/footer :: footer" class="no-print"></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/js/main.js"></script>
 </body>
 </html>
