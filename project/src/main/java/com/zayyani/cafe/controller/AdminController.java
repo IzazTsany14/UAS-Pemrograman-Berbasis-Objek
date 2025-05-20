@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
@@ -32,7 +33,7 @@ public class AdminController {
     
     @Autowired
     private UserService userService;
-    
+
     @GetMapping
     public String adminDashboard(HttpSession session, Model model) {
         if (!validateAdminAccess(session)) {
@@ -44,20 +45,18 @@ public class AdminController {
         
         // Calculate total revenue
         double totalRevenue = orders.stream()
-        .mapToDouble(Order::getTotal) // Error disini
-        .sum();
-    
+            .mapToDouble(Order::getTotal)
+            .sum();
             
         // Get sales by category
-        // Get sales by category
-Map<String, Long> salesByCategory = orders.stream()
-    .flatMap(order -> order.getItems().stream())
-    .filter(item -> item != null && item.getMenuItem() != null) // Add null checks
-    .collect(Collectors.groupingBy(
-        item -> getItemCategory(item.getMenuItem()),
-        Collectors.counting()
-    ));
-        
+        Map<String, Long> salesByCategory = orders.stream()
+            .flatMap(order -> order.getItems().stream())
+            .filter(item -> item != null && item.getMenuItem() != null)
+            .collect(Collectors.groupingBy(
+                item -> getItemCategory(item.getMenuItem()),
+                Collectors.counting()
+            ));
+
         model.addAttribute("username", username);
         model.addAttribute("minumanList", menuService.getAllMinuman());
         model.addAttribute("makananList", menuService.getAllMakanan());
@@ -67,6 +66,17 @@ Map<String, Long> salesByCategory = orders.stream()
         model.addAttribute("salesByCategory", salesByCategory);
         
         return "admin/dashboard";
+    }
+
+    // Perbaikan: Mapping receipt di luar method adminDashboard
+    @GetMapping("/receipt/{orderId}")
+    public String viewReceipt(@PathVariable String orderId, Model model) {
+        Order order = orderService.getOrderById(orderId);
+        if (order == null) {
+            return "redirect:/admin";
+        }
+        model.addAttribute("order", order);
+        return "receipt";
     }
     
     private String getItemCategory(MenuItem item) {
@@ -84,7 +94,6 @@ Map<String, Long> salesByCategory = orders.stream()
     
     @GetMapping("/menu")
     public String menuManagement(HttpSession session, Model model) {
-        // Check if user is logged in and has admin role
         String username = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
         
@@ -103,7 +112,6 @@ Map<String, Long> salesByCategory = orders.stream()
     @PostMapping("/update-price")
     public String updatePrice(@RequestParam String name, @RequestParam double price, 
                              HttpSession session) {
-        // Check if user is logged in and has admin role
         String role = (String) session.getAttribute("role");
         
         if (role == null || !role.equals("admin")) {
@@ -117,7 +125,6 @@ Map<String, Long> salesByCategory = orders.stream()
     
     @GetMapping("/add-menu")
     public String showAddMenuForm(HttpSession session, Model model) {
-        // Check if user is logged in and has admin role
         String username = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
         
@@ -131,54 +138,64 @@ Map<String, Long> salesByCategory = orders.stream()
     }
     
     @PostMapping("/add-menu")
-    public String addMenuItem(@RequestParam String type, 
-                             @RequestParam String name,
-                             @RequestParam double price,
-                             @RequestParam(required = false) String kategori,
-                             @RequestParam(required = false) String minumanType,
-                             @RequestParam(required = false) String ukuranGelas,
-                             @RequestParam(required = false) String tipe,
-                             HttpSession session) {
-        
-        // Check if user is logged in and has admin role
-        String role = (String) session.getAttribute("role");
-        
-        if (role == null || !role.equals("admin")) {
-            return "redirect:/login";
-        }
-        
-        switch (type.toLowerCase()) {
-            case "makanan":
-                Menu.KategoriMakanan katMakanan = "Spicy".equalsIgnoreCase(kategori) ? 
-                    Menu.KategoriMakanan.SPICY : Menu.KategoriMakanan.ORIGINAL;
-                menuService.addMakanan(name, price, katMakanan);
-                break;
-                
-            case "minuman":
-                Menu.KategoriMinuman katMinuman = "Hangat".equalsIgnoreCase(kategori) ? 
-                    Menu.KategoriMinuman.HANGAT : Menu.KategoriMinuman.DINGIN;
-                menuService.addMinuman(name, minumanType, ukuranGelas, price, katMinuman);
-                break;
-                
-            case "dessert":
-                Menu.KategoriDessert katDessert;
-                if ("Frozen".equalsIgnoreCase(kategori)) {
-                    katDessert = Menu.KategoriDessert.FROZEN;
-                } else if ("Hot".equalsIgnoreCase(kategori)) {
-                    katDessert = Menu.KategoriDessert.HOT;
-                } else {
-                    katDessert = Menu.KategoriDessert.COLD;
-                }
-                menuService.addDessert(name, tipe, price, katDessert);
-                break;
-        }
-        
-        return "redirect:/admin/menu";
+public String addMenuItem(
+    @RequestParam String type,
+    @RequestParam String name,
+    @RequestParam double price,
+    @RequestParam(required = false) String kategori,
+    @RequestParam(required = false) String minumanType,
+    @RequestParam(required = false) String ukuranGelas,
+    @RequestParam(required = false) String tipe,
+    @RequestParam(required = false) MultipartFile imageFile, // tambahkan ini
+    HttpSession session
+) {
+    String role = (String) session.getAttribute("role");
+    if (role == null || !role.equals("admin")) {
+        return "redirect:/login";
     }
+
+    String imageUrl = null;
+    if (imageFile != null && !imageFile.isEmpty()) {
+        try {
+            String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
+            String uploadDir = "src/main/resources/static/gambar/";
+            java.nio.file.Path path = java.nio.file.Paths.get(uploadDir + fileName);
+            java.nio.file.Files.copy(imageFile.getInputStream(), path, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            imageUrl = "/gambar/" + fileName;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    switch (type.toLowerCase()) {
+        case "makanan":
+            Menu.KategoriMakanan katMakanan = "Spicy".equalsIgnoreCase(kategori) ?
+                Menu.KategoriMakanan.SPICY : Menu.KategoriMakanan.ORIGINAL;
+            menuService.addMakanan(name, price, katMakanan, imageUrl);
+            break;
+        case "minuman":
+            Menu.KategoriMinuman katMinuman = "Hangat".equalsIgnoreCase(kategori) ?
+                Menu.KategoriMinuman.HANGAT : Menu.KategoriMinuman.DINGIN;
+            menuService.addMinuman(name, minumanType, ukuranGelas, price, katMinuman, imageUrl);
+            break;
+        case "dessert":
+            Menu.KategoriDessert katDessert;
+            if ("Frozen".equalsIgnoreCase(kategori)) {
+                katDessert = Menu.KategoriDessert.FROZEN;
+            } else if ("Hot".equalsIgnoreCase(kategori)) {
+                katDessert = Menu.KategoriDessert.HOT;
+            } else {
+                katDessert = Menu.KategoriDessert.COLD;
+            }
+            menuService.addDessert(name, tipe, price, katDessert, imageUrl);
+            break;
+    }
+
+    return "redirect:/admin/menu";
+}
     
     @GetMapping("/orders")
     public String orderManagement(HttpSession session, Model model) {
-        // Check if user is logged in and has admin role
         String username = (String) session.getAttribute("username");
         String role = (String) session.getAttribute("role");
         
@@ -189,6 +206,6 @@ Map<String, Long> salesByCategory = orders.stream()
         model.addAttribute("username", username);
         model.addAttribute("orders", orderService.getAllOrders());
         
-        return "admin/order-management";
+        return "admin/orders";
     }
 }
