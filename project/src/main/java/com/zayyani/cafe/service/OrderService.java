@@ -30,13 +30,13 @@ public class OrderService {
         return orders;
     }
     
-    public Order getOrder(String id) {
-        return orders.stream()
-                .filter(order -> order.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+    public Order getOrderById(String orderId) {
+    return orders.stream()
+            .filter(order -> order.getId().equals(orderId))
+            .findFirst()
+            .orElse(null);
     }
-    
+     
     private String generateOrderId() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
