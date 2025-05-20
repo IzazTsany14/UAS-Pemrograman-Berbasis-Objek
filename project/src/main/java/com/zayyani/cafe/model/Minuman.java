@@ -12,21 +12,40 @@ public class Minuman extends Menu {
     private String suhuOption; // Hot/Cold/Extra Ice
     private double extraPrice; // Additional price for customizations
 
-    public Minuman(String namaMinuman, String typeMinuman, String ukuranGelas, double harga, int jumlahDipesan, KategoriMinuman kategori) {
-        super(namaMinuman, harga, jumlahDipesan, 0.15); // Diskon 15%
-        this.typeMinuman = typeMinuman;
-        this.ukuranGelas = ukuranGelas;
-        this.kategori = kategori;
-        this.suhuOption = kategori == KategoriMinuman.DINGIN ? "Cold" : "Hot"; // Default based on category
-        this.extraPrice = 0.0;
-        
-        // Assign different image URLs based on type
-        if (typeMinuman.toLowerCase().contains("coffee")) {
-            this.imageUrl = "/images/coffee.jpg";
-        } else {
-            this.imageUrl = "/images/non-coffee.jpg";
+    public Minuman(String namaMinuman, String typeMinuman, String ukuranGelas, double harga, int jumlahDipesan, KategoriMinuman kategori, String imgUrl) {
+    super(namaMinuman, harga, jumlahDipesan, 0.15);
+    this.typeMinuman = typeMinuman;
+    this.ukuranGelas = ukuranGelas;
+    this.kategori = kategori;
+    this.suhuOption = kategori == KategoriMinuman.DINGIN ? "Cold" : "Hot";
+    this.extraPrice = 0.0;
+    
+    if (imgUrl != null && !imgUrl.isEmpty()) {
+        this.imageUrl = imgUrl;
+    } else {
+        // Atur gambar default berdasarkan jenis minuman
+        switch (namaMinuman.toLowerCase()) {
+            case "brown sugar":
+                this.imageUrl = "/images/brown-sugar.jpg";
+                break;
+            case "caramel macchiato":
+                this.imageUrl = "/images/caramel-macchiato.jpg";
+                break;
+            case "americano coffee":
+                this.imageUrl = "/images/americano.jpg";
+                break;
+            case "matcha latte":
+                this.imageUrl = "/images/matcha-latte.jpg";
+                break;
+            case "taro":
+                this.imageUrl = "/images/taro-drink.jpg";
+                break;
+            default:
+                this.imageUrl = typeMinuman.equalsIgnoreCase("Coffee") ? 
+                    "/images/coffee.jpg" : "/images/non-coffee.jpg";
         }
     }
+}
 
     @Override
     public double getTotalPrice() {
