@@ -38,10 +38,10 @@ Website sederhana berbasis Java untuk memesan sebuah menu seperti makanan, minum
 | --- | --- | --- |
 | **Nakula Syafa Saputra** | **Izaz Tsany Rismawan** | **Gofur Aryan Nur Karim** |
 
-| [<img src="https://avatars.githubusercontent.com/u/207851984?v=4" width="250"/>](https://github.com/ShevaFortz) |[<img src="https://avatars.githubusercontent.com/u/208031707?v=4" width="250"/>](https://github.com/feardaa) | [<img src="https://avatars.githubusercontent.com/u/207815793?v=4" width="250"/>](https://github.com/lupitaaasetia) |
+| [<img src="https://i.pinimg.com/474x/64/11/5e/64115e6a233c896e53b077f90816ccff.jpg" width="250"/>](https://github.com/ShevaFortz) |[<img src="https://avatars.githubusercontent.com/u/208031707?v=4" width="250"/>](https://github.com/feardaa) | [<img src="https://avatars.githubusercontent.com/u/207815793?v=4" width="250"/>](https://github.com/lupitaaasetia) |
 | --- | --- | --- |
 | **Reyhan Sheva RizQullah** | **Fearda Agnessiya Putri Dardiri** | **Lufita Setiati** |
 
-| [<img src="https://avatars.githubusercontent.com/u/207960208?v=4" width="250"/>](https://github.com/nurasyifaaa) |[<img src="https://avatars.githubusercontent.com/u/182313276?v=4" width="250"/>](https://github.com/AxelPra) | 
+| [<img src="https://avatars.githubusercontent.com/u/207960208?v=4" width="250"/>](https://github.com/nurasyifaaa) |[<img src="https://i.pinimg.com/736x/51/74/53/5174530b9c3f0395b74b1b881b7e108b.jpg" width="250"/>](https://github.com/AxelPra) | 
 | --- | --- |
 | **Nur Rohmatin Asy-Syifa** | **Muhammad Amrullah** |
