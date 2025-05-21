@@ -1,7 +1,7 @@
 
-# 📚 Caffe Zayyani's
+# ☕ Caffe Zayyani's
 
-Aplikasi berbasis Java untuk mengelola dan menampilkan data 
+Website sederhana berbasis Java untuk memesan sebuah menu seperti makanan, minuman dan dessert serta mengelola dan menampilkan data dan bisa cetak struk setelah pembelian
 
 ---
 
@@ -24,11 +24,11 @@ Aplikasi berbasis Java untuk mengelola dan menampilkan data
 - 🔎 Cari berdasarkan **Menu**
 - 🎭 Cari berdasarkan **Kategori**
 - 📋 Tampilkan **Semua Menu**
-- 📋 Tampilkan **Dashboard**
+- 🗂 Tampilkan **Dashboard**
 - 💰 Tampilkan Menu urut berdasarkan **Harga**
-- 🌟 Daftar **Makanan**
-- 📱 Daftar **Minuman**
-- 🏷️ Daftar **Dessert**
+- 🍝 Daftar **Makanan**
+- 🍺 Daftar **Minuman**
+- 🍮 Daftar **Dessert**
 - 🧾 Cetak Struk Pembelian
 - 🛒 Keranjang Pembelian
 
