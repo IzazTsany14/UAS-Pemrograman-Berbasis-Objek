@@ -35,6 +35,7 @@
                             <span th:text="${username}">Admin</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/">Kembali ke Halaman Utama</a></li>
                             <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         </ul>
                     </div>
@@ -105,13 +106,19 @@
                                                 </td>
                                                 <td>Rp. <span th:text="${#numbers.formatDecimal(makanan.harga, 0, 'COMMA', 0, 'POINT')}">0</span></td>
                                                 <td>
+                                                    <button class="btn btn-sm btn-warning me-1" onclick="editMenu(this)"
+                                                        th:data-name="${makanan.nama}"
+                                                        th:data-type="'makanan'"
+                                                        th:data-category="${makanan.kategori}">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
                                                     <button class="btn btn-sm btn-info me-1" onclick="editPrice(this)" 
                                                             th:data-name="${makanan.nama}" 
                                                             th:data-price="${makanan.harga}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(this)"
-                                                            th:data-name="${makanan.nama}">
+                                                            th:data-name="${makanan.nama}" th:data-type="'makanan'">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -157,13 +164,19 @@
                                                 </td>
                                                 <td>Rp. <span th:text="${#numbers.formatDecimal(minuman.harga, 0, 'COMMA', 0, 'POINT')}">0</span></td>
                                                 <td>
+                                                    <button class="btn btn-sm btn-warning me-1" onclick="editMenu(this)"
+                                                        th:data-name="${minuman.nama}"
+                                                        th:data-type="'minuman'"
+                                                        th:data-category="${minuman.kategori}">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
                                                     <button class="btn btn-sm btn-info me-1" onclick="editPrice(this)"
                                                             th:data-name="${minuman.nama}"
                                                             th:data-price="${minuman.harga}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(this)"
-                                                            th:data-name="${minuman.nama}">
+                                                            th:data-name="${minuman.nama}" th:data-type="'minuman'">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -207,13 +220,19 @@
                                                 </td>
                                                 <td>Rp. <span th:text="${#numbers.formatDecimal(dessert.harga, 0, 'COMMA', 0, 'POINT')}">0</span></td>
                                                 <td>
+                                                    <button class="btn btn-sm btn-warning me-1" onclick="editMenu(this)"
+                                                        th:data-name="${dessert.nama}"
+                                                        th:data-type="'dessert'"
+                                                        th:data-category="${dessert.kategori}">
+                                                        <i class="fas fa-pen"></i>
+                                                    </button>
                                                     <button class="btn btn-sm btn-info me-1" onclick="editPrice(this)"
                                                             th:data-name="${dessert.nama}"
                                                             th:data-price="${dessert.harga}">
                                                         <i class="fas fa-edit"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-danger" onclick="deleteMenuItem(this)"
-                                                            th:data-name="${dessert.nama}">
+                                                            th:data-name="${dessert.nama}" th:data-type="'dessert'">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -237,7 +256,7 @@
                     <h5 class="modal-title">Add New Menu Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/admin/add-menu" method="post">
+                <form action="/admin/add-menu" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Menu Type</label>
@@ -261,7 +280,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Gambar Menu</label>
-                            <input type="file" class="form-control" name="imageFile" accept="image/*">
+                            <input type="file" class="form-control" name="imageFile" accept="image/*" required>
                         </div>
                         
                         <!-- Makanan Options -->
@@ -335,7 +354,6 @@
                     <div class="modal-body">
                         <input type="hidden" name="name" id="editItemName">
                         <div class="mb-3">
-                            
                             <label class="form-label">New Price</label>
                             <input type="number" class="form-control" name="price" id="editItemPrice" min="0" step="500" required>
                         </div>
@@ -343,6 +361,38 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Update Price</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Nama & Kategori Modal -->
+    <div class="modal fade" id="editMenuModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Nama & Kategori Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="/admin/update-menu" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="oldName" id="editMenuOldName">
+                        <input type="hidden" name="type" id="editMenuType">
+                        <div class="mb-3">
+                            <label class="form-label">Nama Baru</label>
+                            <input type="text" class="form-control" name="newName" id="editMenuNewName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kategori Baru</label>
+                            <select class="form-select" name="newCategory" id="editMenuNewCategory">
+                                <!-- Opsi kategori akan diisi via JS -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>
@@ -381,19 +431,52 @@
             new bootstrap.Modal(document.getElementById('editPriceModal')).show();
         }
 
-        // Delete menu item function
+        // Edit menu (nama & kategori)
+        function editMenu(button) {
+            const name = button.getAttribute('data-name');
+            const type = button.getAttribute('data-type').replace(/'/g, '');
+            const category = button.getAttribute('data-category');
+
+            document.getElementById('editMenuOldName').value = name;
+            document.getElementById('editMenuType').value = type;
+            document.getElementById('editMenuNewName').value = name;
+
+            // Set kategori sesuai tipe menu
+            const categorySelect = document.getElementById('editMenuNewCategory');
+            categorySelect.innerHTML = '';
+            if (type === 'makanan') {
+                categorySelect.innerHTML = `
+                    <option value="Original" ${category === 'Original' ? 'selected' : ''}>Original</option>
+                    <option value="Spicy" ${category === 'Spicy' ? 'selected' : ''}>Spicy</option>
+                `;
+            } else if (type === 'minuman') {
+                categorySelect.innerHTML = `
+                    <option value="Dingin" ${category === 'Dingin' ? 'selected' : ''}>Dingin</option>
+                    <option value="Hangat" ${category === 'Hangat' ? 'selected' : ''}>Hangat</option>
+                `;
+            } else if (type === 'dessert') {
+                categorySelect.innerHTML = `
+                    <option value="Frozen" ${category === 'Frozen' ? 'selected' : ''}>Frozen</option>
+                    <option value="Cold" ${category === 'Cold' ? 'selected' : ''}>Cold</option>
+                    <option value="Hot" ${category === 'Hot' ? 'selected' : ''}>Hot</option>
+                `;
+            }
+
+            new bootstrap.Modal(document.getElementById('editMenuModal')).show();
+        }
+
         function deleteMenuItem(button) {
-            const name = button.dataset.name;
-            if (confirm(`Are you sure you want to delete ${name}?`)) {
-                // Send delete request
-                fetch(`/admin/delete-menu?name=${encodeURIComponent(name)}`, {
+            const name = button.getAttribute('data-name');
+            const type = button.getAttribute('data-type');
+            if (confirm(`Yakin ingin menghapus menu ${name}?`)) {
+                fetch(`/admin/delete-menu?name=${encodeURIComponent(name)}&type=${encodeURIComponent(type)}`, {
                     method: 'POST'
-                }).then(response => {
-                    if (response.ok) {
-                        // Reload page on success
+                }).then(response => response.text())
+                .then(result => {
+                    if (result === "ok") {
                         window.location.reload();
                     } else {
-                        alert('Failed to delete menu item');
+                        alert('Gagal menghapus menu');
                     }
                 });
             }
