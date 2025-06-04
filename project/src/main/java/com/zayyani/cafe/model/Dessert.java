@@ -12,7 +12,7 @@ public class Dessert extends Menu {
     private double extraPrice; // Additional price for customizations
 
     public Dessert(String nama, String tipe, double harga, int jumlah, KategoriDessert kategori, String imgUrl) {
-    super(nama, harga, jumlah, 0.08);
+    super(nama, harga, jumlah, 0.08, imgUrl);
     this.tipe = tipe;
     this.kategori = kategori;
     this.sajian = kategori.toString();
@@ -27,10 +27,10 @@ public class Dessert extends Menu {
                 this.imageUrl = "/images/cheesecake.jpg";
                 break;
             case "chocolate lava":
-                this.imageUrl = "/images/chocolate-lava.jpg";
+                this.imageUrl = "/images/chocolatelava.jpg";
                 break;
             case "ice cream sundae":
-                this.imageUrl = "/images/ice-cream-sundae.jpg";
+                this.imageUrl = "/images/icecreamsundae.jpg";
                 break;
             case "tiramisu":
                 this.imageUrl = "/images/tiramisu.jpg";
