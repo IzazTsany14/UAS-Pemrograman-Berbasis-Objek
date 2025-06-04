@@ -74,11 +74,8 @@
                              th:data-price="${makanan.harga}"
                              th:data-category="makanan">
                             <div class="card menu-card h-100">
-                                <div class="menu-badge" th:if="${makanan.kategori.toString() == 'Spicy'}">
-                                    <span class="badge bg-danger"><i class="fas fa-pepper-hot me-1"></i>Spicy</span>
-                                </div>
-                                <img th:src="${makanan.imageUrl != null ? makanan.imageUrl : '/images/food.jpg'}" 
-                                    class="card-img-top menu-img" alt="Food Image">
+                                <img th:src="${makanan.imageUrl != null ? makanan.imageUrl : '/images/nasigoreng.jpg'}" 
+                                class="card-img-top menu-img" alt="Food Image">
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${makanan.nama}">Nama Makanan</h5>
                                     <p class="card-text text-muted" th:text="${'Kategori: ' + makanan.kategori}">Kategori</p>
@@ -106,12 +103,6 @@
                              th:data-price="${minuman.harga}"
                              th:data-category="minuman">
                             <div class="card menu-card h-100">
-                                <div class="menu-badge">
-                                    <span class="badge" th:classappend="${minuman.kategori.toString() == 'Dingin' ? 'bg-info' : 'bg-warning'}">
-                                        <i th:class="${minuman.kategori.toString() == 'Dingin' ? 'fas fa-snowflake' : 'fas fa-fire'} + ' me-1'"></i>
-                                        <span th:text="${minuman.kategori}">Kategori</span>
-                                    </span>
-                                </div>
                                 <img th:src="${minuman.imageUrl != null ? minuman.imageUrl : '/images/drink.jpg'}" 
                                     class="card-img-top menu-img" alt="Drink Image">
                                 <div class="card-body">
@@ -141,13 +132,6 @@
                              th:data-price="${dessert.harga}"
                              th:data-category="dessert">
                             <div class="card menu-card h-100">
-                                <div class="menu-badge">
-                                    <span class="badge" 
-                                          th:classappend="${dessert.kategori.toString() == 'Frozen' ? 'bg-info' : (dessert.kategori.toString() == 'Hot' ? 'bg-warning' : 'bg-primary')}">
-                                        <i th:class="${dessert.kategori.toString() == 'Frozen' ? 'fas fa-snowflake' : (dessert.kategori.toString() == 'Hot' ? 'fas fa-fire' : 'fas fa-temperature-low')} + ' me-1'"></i>
-                                        <span th:text="${dessert.kategori}">Kategori</span>
-                                    </span>
-                                </div>
                                 <img th:src="${dessert.imageUrl != null ? dessert.imageUrl : '/images/dessert.jpg'}" 
                                     class="card-img-top menu-img" alt="Dessert Image">
                                 <div class="card-body">
@@ -183,7 +167,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const searchInput = document.getElementById('searchInput');
             const sortSelect = document.getElementById('sortSelect');
-            const menuItems = document.querySelectorAll('.menu-item');
             const menuContainer = document.getElementById('menuContainer');
             const noResults = document.getElementById('noResults');
 
@@ -192,58 +175,73 @@
                 const sortValue = sortSelect.value;
                 let visibleItems = 0;
 
-                // Convert NodeList to Array for sorting
-                const itemsArray = Array.from(menuItems);
-
-                // Sort items
-                itemsArray.sort((a, b) => {
+                // Ambil semua item menu yang ada di halaman (bisa berubah karena filter)
+                const menuItems = Array.from(document.querySelectorAll('.menu-item'));
+                // Sorting
+                menuItems.sort((a, b) => {
                     const aName = a.dataset.name.toLowerCase();
                     const bName = b.dataset.name.toLowerCase();
                     const aPrice = parseFloat(a.dataset.price);
                     const bPrice = parseFloat(b.dataset.price);
 
                     switch(sortValue) {
-                        case 'name-asc':
-                            return aName.localeCompare(bName);
-                        case 'name-desc':
-                            return bName.localeCompare(aName);
-                        case 'price-asc':
-                            return aPrice - bPrice;
-                        case 'price-desc':
-                            return bPrice - aPrice;
-                        default:
-                            return 0;
+                        case 'name-asc': return aName.localeCompare(bName);
+                        case 'name-desc': return bName.localeCompare(aName);
+                        case 'price-asc': return aPrice - bPrice;
+                        case 'price-desc': return bPrice - aPrice;
+                        default: return 0;
                     }
                 });
 
-                // Filter and reorder items
-                itemsArray.forEach(item => {
-                    const name = item.dataset.name.toLowerCase();
-                    const matches = name.includes(searchTerm);
-                    
-                    if (matches) {
-                        item.style.display = '';
-                        visibleItems++;
-                        // Move item to its new sorted position
-                        item.parentNode.appendChild(item);
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-
-                // Show/hide no results message
-                noResults.style.display = visibleItems === 0 ? 'block' : 'none';
-                
-                // Update section visibility
+                // Untuk setiap section, filter dan urutkan item di dalamnya
                 document.querySelectorAll('.menu-section').forEach(section => {
-                    const hasVisibleItems = section.querySelector('.menu-item[style=""]');
-                    section.style.display = hasVisibleItems ? '' : 'none';
+                    const row = section.querySelector('.menu-items-row');
+                    if (!row) return;
+                    const items = Array.from(row.querySelectorAll('.menu-item'));
+                    let sectionVisible = false;
+
+                    // Buat fragment untuk efisiensi reflow
+                    const fragment = document.createDocumentFragment();
+
+                    // Filter dan urutkan item di section ini
+                    menuItems.forEach(item => {
+                        if (items.includes(item)) {
+                            const name = item.dataset.name.toLowerCase();
+                            const matches = name.includes(searchTerm);
+                            if (matches) {
+                                item.style.display = '';
+                                fragment.appendChild(item);
+                                sectionVisible = true;
+                                visibleItems++;
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        }
+                    });
+
+                    // Tempel ulang hasil urutan ke row
+                    row.appendChild(fragment);
+
+                    // Tampilkan/sembunyikan section
+                    section.style.display = sectionVisible ? '' : 'none';
                 });
+
+                // Tampilkan pesan jika tidak ada hasil
+                noResults.style.display = visibleItems === 0 ? 'block' : 'none';
             }
 
-            // Event listeners
-            searchInput.addEventListener('input', filterAndSortItems);
+            // Debounce agar tidak terlalu sering filter saat user mengetik cepat
+            let debounceTimeout;
+            function debounceFilterAndSort() {
+                clearTimeout(debounceTimeout);
+                debounceTimeout = setTimeout(filterAndSortItems, 100);
+            }
+
+            searchInput.addEventListener('input', debounceFilterAndSort);
             sortSelect.addEventListener('change', filterAndSortItems);
+
+            // Initial call
+            filterAndSortItems();
         });
     </script>
 </body>
