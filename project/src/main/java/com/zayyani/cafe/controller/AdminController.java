@@ -122,6 +122,22 @@ public class AdminController {
         
         return "redirect:/admin/menu";
     }
+
+    @PostMapping("/update-menu")
+    public String updateMenu(
+        @RequestParam String oldName,
+        @RequestParam String type,
+        @RequestParam String newName,
+        @RequestParam String newCategory,
+        HttpSession session
+    ) {
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equals("admin")) {
+            return "redirect:/login";
+        }
+        menuService.updateMenu(oldName, type, newName, newCategory);
+        return "redirect:/admin/menu";
+    }
     
     @GetMapping("/add-menu")
     public String showAddMenuForm(HttpSession session, Model model) {
@@ -136,23 +152,23 @@ public class AdminController {
         
         return "admin/add-menu";
     }
-    
+        
     @PostMapping("/add-menu")
-public String addMenuItem(
-    @RequestParam String type,
-    @RequestParam String name,
-    @RequestParam double price,
-    @RequestParam(required = false) String kategori,
-    @RequestParam(required = false) String minumanType,
-    @RequestParam(required = false) String ukuranGelas,
-    @RequestParam(required = false) String tipe,
-    @RequestParam(required = false) MultipartFile imageFile, // tambahkan ini
-    HttpSession session
-) {
-    String role = (String) session.getAttribute("role");
-    if (role == null || !role.equals("admin")) {
-        return "redirect:/login";
-    }
+    public String addMenuItem(
+        @RequestParam String type,
+        @RequestParam String name,
+        @RequestParam double price,
+        @RequestParam(required = false) String kategori,
+        @RequestParam(required = false) String minumanType,
+        @RequestParam(required = false) String ukuranGelas,
+        @RequestParam(required = false) String tipe,
+        @RequestParam(required = false) MultipartFile imageFile, // tambahkan ini
+        HttpSession session
+    ) {
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equals("admin")) {
+            return "redirect:/login";
+        }
 
     String imageUrl = null;
     if (imageFile != null && !imageFile.isEmpty()) {
@@ -189,10 +205,10 @@ public String addMenuItem(
             }
             menuService.addDessert(name, tipe, price, katDessert, imageUrl);
             break;
-    }
+        }
 
     return "redirect:/admin/menu";
-}
+    }
     
     @GetMapping("/orders")
     public String orderManagement(HttpSession session, Model model) {
@@ -207,5 +223,39 @@ public String addMenuItem(
         model.addAttribute("orders", orderService.getAllOrders());
         
         return "admin/orders";
+    }
+    @PostMapping("/delete-menu")
+    @ResponseBody
+    public String deleteMenu(@RequestParam String name, @RequestParam String type, HttpSession session) {
+        String role = (String) session.getAttribute("role");
+        if (role == null || !role.equals("admin")) {
+            return "unauthorized";
+        }
+        boolean success = menuService.deleteMenuByNameAndType(name, type);
+        return success ? "ok" : "fail";
+    }
+    @GetMapping("/gambar/{filename:.+}")
+    @ResponseBody
+    public org.springframework.core.io.Resource serveImage(@PathVariable String filename, @RequestParam(required = false) String imageUrl) {
+        try {
+            // Jika imageUrl diberikan, gunakan imageUrl, jika tidak gunakan filename
+            String filePath;
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                // Hilangkan prefix "/gambar/" jika ada
+                String cleanImageUrl = imageUrl.replaceFirst("^/gambar/", "");
+                filePath = "src/main/resources/static/gambar/" + cleanImageUrl;
+            } else {
+                filePath = "src/main/resources/static/gambar/" + filename;
+            }
+            java.nio.file.Path file = java.nio.file.Paths.get(filePath).normalize();
+            org.springframework.core.io.Resource resource = new org.springframework.core.io.UrlResource(file.toUri());
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            } else {
+                throw new RuntimeException("Could not read file: " + filename);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Could not serve file: " + filename, e);
+        }
     }
 }
