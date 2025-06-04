@@ -11,7 +11,7 @@ public class Makanan extends Menu {
     private double extraPrice; // Additional price for customizations
 
     public Makanan(String nama, double harga, int jumlah, KategoriMakanan kategori, String imgUrl) {
-    super(nama, harga, jumlah, 0.1);
+    super(nama, harga, jumlah, 0.1, imgUrl);
     this.kategori = kategori;
     this.levelPedas = kategori == KategoriMakanan.SPICY ? "Spicy" : "Original";
     this.extraPrice = 0.0;
@@ -22,16 +22,16 @@ public class Makanan extends Menu {
         // Atur gambar default berdasarkan nama makanan
         switch (nama.toLowerCase()) {
             case "nasi goreng":
-                this.imageUrl = "/images/nasi-goreng.jpg";
+                this.imageUrl = "/images/nasigoreng.jpg";
                 break;
             case "mie ayam":
-                this.imageUrl = "/images/mie-ayam.jpg";
+                this.imageUrl = "/images/mieayam.jpg";
                 break;
             case "ayam geprek":
-                this.imageUrl = "/images/ayam-geprek.jpg";
+                this.imageUrl = "/images/ayamgeprek.jpg";
                 break;
             case "ayam goreng":
-                this.imageUrl = "/images/ayam-goreng.jpg";
+                this.imageUrl = "/images/ayamgoreng.jpg";
                 break;
             default:
                 this.imageUrl = "/images/food.jpg";
