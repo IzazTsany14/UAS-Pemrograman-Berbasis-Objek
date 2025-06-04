@@ -12,12 +12,17 @@ public abstract class Menu implements MenuItem {
     protected double diskonRate;
     protected String imageUrl;
 
-    public Menu(String nama, double harga, int jumlah, double diskonRate) {
+    public Menu(String nama, double harga, int jumlah, double diskonRate, String imageUrl) {
         this.nama = nama;
         this.harga = harga;
         this.jumlah = jumlah;
         this.diskonRate = diskonRate;
-        this.imageUrl = "/images/default.jpg"; // Default image
+        // Jika imageUrl tidak null atau kosong, gunakan yang diberikan, jika tidak, set default
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            this.imageUrl = imageUrl;
+        } else {
+            this.imageUrl = "gambar/default.jpg"; // Default image di folder 'gambar'
+        }
     }
 
     @Override
@@ -53,7 +58,7 @@ public abstract class Menu implements MenuItem {
     public double getTotalPrice() {
         return calculatePriceAfterDiscount();
     }
-
+    
     @Override
     public void displayInfo() {
         System.out.println("Nama Menu: " + nama);
@@ -111,5 +116,11 @@ public abstract class Menu implements MenuItem {
         public String toString() {
             return name;
         }
+    }
+    public String getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
