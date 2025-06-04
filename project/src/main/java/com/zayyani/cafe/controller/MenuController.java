@@ -6,9 +6,19 @@ import com.zayyani.cafe.service.MenuService;
 import com.zayyani.cafe.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.zayyani.cafe.service.FileStorageService;
+import org.springframework.core.io.*;
+import org.springframework.http.*;
+
+import java.nio.file.*;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.Map;
@@ -25,6 +35,9 @@ public class MenuController {
     
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
     
     @GetMapping
     public String getMenu(@RequestParam(defaultValue = "all") String category, Model model, HttpSession session) {
@@ -126,5 +139,31 @@ public class MenuController {
         }
         
         return "redirect:/cart";
+    }
+
+    // Upload gambar
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        String fileName = fileStorageService.storeFile(file);
+        String imageUrl = "/api/menu/images/" + fileName;
+        return ResponseEntity.ok(imageUrl);
+    }
+
+    // Tampilkan gambar
+    @GetMapping("/images/{fileName:.+}")
+    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
+        try {
+            Path filePath = fileStorageService.loadFile(fileName);
+            Resource resource = new UrlResource(filePath.toUri());
+            if (resource.exists()) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG) // Atur MIME jika tahu ekstensinya
+                        .body(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
