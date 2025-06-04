@@ -13,7 +13,7 @@ public class Minuman extends Menu {
     private double extraPrice; // Additional price for customizations
 
     public Minuman(String namaMinuman, String typeMinuman, String ukuranGelas, double harga, int jumlahDipesan, KategoriMinuman kategori, String imgUrl) {
-    super(namaMinuman, harga, jumlahDipesan, 0.15);
+    super(namaMinuman, harga, jumlahDipesan, 0.15, imgUrl);
     this.typeMinuman = typeMinuman;
     this.ukuranGelas = ukuranGelas;
     this.kategori = kategori;
@@ -26,19 +26,19 @@ public class Minuman extends Menu {
         // Atur gambar default berdasarkan jenis minuman
         switch (namaMinuman.toLowerCase()) {
             case "brown sugar":
-                this.imageUrl = "/images/brown-sugar.jpg";
+                this.imageUrl = "/images/brownsugar.jpg";
                 break;
             case "caramel macchiato":
-                this.imageUrl = "/images/caramel-macchiato.jpg";
+                this.imageUrl = "/images/caramelmacchiato.jpg";
                 break;
             case "americano coffee":
                 this.imageUrl = "/images/americano.jpg";
                 break;
             case "matcha latte":
-                this.imageUrl = "/images/matcha-latte.jpg";
+                this.imageUrl = "/images/matchalatte.jpg";
                 break;
             case "taro":
-                this.imageUrl = "/images/taro-drink.jpg";
+                this.imageUrl = "/images/taro.jpg";
                 break;
             default:
                 this.imageUrl = typeMinuman.equalsIgnoreCase("Coffee") ? 
