@@ -19,6 +19,10 @@ public class UserService {
         // Default user
         users.add(new User("user", "user", "user"));
     }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
     
     public Optional<User> findByUsername(String username) {
         return users.stream()
