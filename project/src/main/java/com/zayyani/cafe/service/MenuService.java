@@ -20,20 +20,20 @@ public class MenuService {
     public void init() {
     // Initialize menu items dengan imageUrl default
     // Minuman
-    minumanList.add(new Minuman("Brown Sugar", "Non Coffee", "Large", 25000, 1, Menu.KategoriMinuman.DINGIN, ""));
+    minumanList.add(new Minuman("Brown Sugar", "Non Coffee", "Large", 17000, 1, Menu.KategoriMinuman.DINGIN, ""));
     minumanList.add(new Minuman("Caramel Macchiato", "Cold Brew", "Medium", 20000, 1, Menu.KategoriMinuman.DINGIN, ""));
     minumanList.add(new Minuman("Americano Coffee", "Coffee", "Small", 15000, 1, Menu.KategoriMinuman.HANGAT, ""));
     minumanList.add(new Minuman("Matcha Latte", "Non Coffee", "Medium", 9000, 1, Menu.KategoriMinuman.DINGIN, ""));
     minumanList.add(new Minuman("Taro", "Non Coffee", "Small", 13000, 1, Menu.KategoriMinuman.DINGIN, ""));
 
     // Makanan
-    makananList.add(new Makanan("Nasi Goreng", 30000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
-    makananList.add(new Makanan("Mie Ayam", 25000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
-    makananList.add(new Makanan("Ayam Geprek", 28000, 1, Menu.KategoriMakanan.SPICY, ""));
-    makananList.add(new Makanan("Ayam Goreng", 26000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
+    makananList.add(new Makanan("Nasi Goreng", 15000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
+    makananList.add(new Makanan("Mie Ayam", 8000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
+    makananList.add(new Makanan("Ayam Geprek", 17000, 1, Menu.KategoriMakanan.SPICY, ""));
+    makananList.add(new Makanan("Ayam Goreng", 18000, 1, Menu.KategoriMakanan.ORIGINAL, ""));
 
     // Dessert
-    dessertList.add(new Dessert("Cheesecake", "Sweet", 18000, 1, Menu.KategoriDessert.COLD, ""));
+    dessertList.add(new Dessert("Cheesecake", "Sweet", 10000, 1, Menu.KategoriDessert.COLD, ""));
     dessertList.add(new Dessert("Chocolate Lava", "Sweet", 20000, 1, Menu.KategoriDessert.HOT, ""));
     dessertList.add(new Dessert("Ice Cream Sundae", "Cold", 15000, 1, Menu.KategoriDessert.FROZEN, ""));
     dessertList.add(new Dessert("Tiramisu", "Sweet", 14000, 1, Menu.KategoriDessert.HOT, ""));
@@ -143,6 +143,52 @@ public class MenuService {
         
         return updated;
     }
+    public boolean updateMenu(String oldName, String type, String newName, String newCategory) {
+    boolean updated = false;
+    switch (type.toLowerCase()) {
+        case "makanan":
+            for (Makanan makanan : makananList) {
+                if (makanan.getNama().equalsIgnoreCase(oldName)) {
+                    makanan.setNama(newName);
+                    makanan.setKategori(
+                        "Spicy".equalsIgnoreCase(newCategory) ? Menu.KategoriMakanan.SPICY : Menu.KategoriMakanan.ORIGINAL
+                    );
+                    updated = true;
+                    break;
+                }
+            }
+            break;
+        case "minuman":
+            for (Minuman minuman : minumanList) {
+                if (minuman.getNama().equalsIgnoreCase(oldName)) {
+                    minuman.setNama(newName);
+                    minuman.setKategori(
+                        "Hangat".equalsIgnoreCase(newCategory) ? Menu.KategoriMinuman.HANGAT : Menu.KategoriMinuman.DINGIN
+                    );
+                    updated = true;
+                    break;
+                }
+            }
+            break;
+        case "dessert":
+            for (Dessert dessert : dessertList) {
+                if (dessert.getNama().equalsIgnoreCase(oldName)) {
+                    dessert.setNama(newName);
+                    if ("Frozen".equalsIgnoreCase(newCategory)) {
+                        dessert.setKategori(Menu.KategoriDessert.FROZEN);
+                    } else if ("Hot".equalsIgnoreCase(newCategory)) {
+                        dessert.setKategori(Menu.KategoriDessert.HOT);
+                    } else {
+                        dessert.setKategori(Menu.KategoriDessert.COLD);
+                    }
+                    updated = true;
+                    break;
+                }
+            }
+            break;
+        }
+        return updated;
+    }
 
     public void addMakanan(String name, double price, Menu.KategoriMakanan kategori, String imageUrl) {
     makananList.add(new Makanan(name, price, 1, kategori, imageUrl));
@@ -206,4 +252,17 @@ public class MenuService {
                 return 0.0;
         }
     }
+
+    public boolean deleteMenuByNameAndType(String name, String type) {
+    switch (type.toLowerCase()) {
+        case "makanan":
+            return makananList.removeIf(m -> m.getNama().equalsIgnoreCase(name));
+        case "minuman":
+            return minumanList.removeIf(m -> m.getNama().equalsIgnoreCase(name));
+        case "dessert":
+            return dessertList.removeIf(m -> m.getNama().equalsIgnoreCase(name));
+        default:
+            return false;
+    }
+}
 }
