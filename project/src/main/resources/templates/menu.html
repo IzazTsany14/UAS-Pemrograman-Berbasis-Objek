@@ -6,7 +6,150 @@
     <title>Menu - Cafe Zayyani</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* Custom Animation Styles */
+        .menu-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+        
+        .category-pill {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .category-pill::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #0d6efd;
+            transition: all 0.3s ease;
+        }
+        
+        .category-pill:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .category-pill.active::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #0d6efd, transparent);
+            border-radius: 3px;
+        }
+        
+        .menu-img {
+            transition: transform 0.5s ease;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .menu-card:hover .menu-img {
+            transform: scale(1.05);
+        }
+        
+        /* Loading animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .menu-item {
+            animation: fadeInUp 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        /* Search input focus effect */
+        #searchInput:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            border-color: #86b7fe;
+        }
+        
+        /* No results animation */
+        #noResults {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Price tag animation */
+        .menu-price {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-card:hover .menu-price {
+            transform: scale(1.1);
+            color: #0d6efd;
+            font-weight: bold;
+        }
+        
+        /* Button animation */
+        .btn-primary {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .btn-primary:focus:not(:active)::after {
+            animation: ripple 0.6s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -14,16 +157,19 @@
 
     <!-- Menu Banner -->
     <section class="menu-banner py-5 bg-light text-center">
-        <div class="container">
+        <div class="container animate__animated animate__fadeIn">
             <h1 class="display-4">Menu Kami</h1>
             <p class="lead">Pilihan menu lezat yang tersedia di Cafe Zayyani's</p>
             
             <!-- Search and Sort Controls -->
             <div class="row justify-content-center mb-4">
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari menu...">
-                        <select id="sortSelect" class="form-select" style="max-width: 200px;">
+                <div class="col-md-8">
+                    <div class="input-group shadow-sm">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="fas fa-search text-muted"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Cari menu...">
+                        <select id="sortSelect" class="form-select">
                             <option value="name-asc">Nama (A-Z)</option>
                             <option value="name-desc">Nama (Z-A)</option>
                             <option value="price-asc">Harga (Terendah)</option>
@@ -63,16 +209,17 @@
             <!-- Menu Items Container -->
             <div id="menuContainer">
                 <!-- Makanan Section -->
-                <div th:if="${!makananList.empty}" class="menu-section mb-5">
+                <div th:if="${!makananList.empty}" class="menu-section mb-5 animate__animated animate__fadeIn">
                     <h2 class="section-title">
                         <i class="fas fa-utensils me-2"></i>Makanan
                     </h2>
                     <hr>
                     <div class="row menu-items-row">
-                        <div class="col-md-6 col-lg-4 mb-4 menu-item" th:each="makanan : ${makananList}"
+                        <div class="col-md-6 col-lg-4 mb-4 menu-item" th:each="makanan, stat : ${makananList}"
                              th:data-name="${makanan.nama}"
                              th:data-price="${makanan.harga}"
-                             th:data-category="makanan">
+                             th:data-category="makanan"
+                             th:style="'animation-delay: ' + ${stat.index * 0.1} + 's;'">
                             <div class="card menu-card h-100">
                                 <img th:src="${makanan.imageUrl != null ? makanan.imageUrl : '/images/nasigoreng.jpg'}" 
                                 class="card-img-top menu-img" alt="Food Image">
@@ -92,16 +239,17 @@
                 </div>
                 
                 <!-- Minuman Section -->
-                <div th:if="${!minumanList.empty}" class="menu-section mb-5">
+                <div th:if="${!minumanList.empty}" class="menu-section mb-5 animate__animated animate__fadeIn">
                     <h2 class="section-title">
                         <i class="fas fa-mug-hot me-2"></i>Minuman
                     </h2>
                     <hr>
                     <div class="row menu-items-row">
-                        <div class="col-md-6 col-lg-4 mb-4 menu-item" th:each="minuman : ${minumanList}"
+                        <div class="col-md-6 col-lg-4 mb-4 menu-item" th:each="minuman, stat : ${minumanList}"
                              th:data-name="${minuman.nama}"
                              th:data-price="${minuman.harga}"
-                             th:data-category="minuman">
+                             th:data-category="minuman"
+                             th:style="'animation-delay: ' + ${stat.index * 0.1} + 's;'">
                             <div class="card menu-card h-100">
                                 <img th:src="${minuman.imageUrl != null ? minuman.imageUrl : '/images/drink.jpg'}" 
                                     class="card-img-top menu-img" alt="Drink Image">
@@ -121,16 +269,17 @@
                 </div>
                 
                 <!-- Dessert Section -->
-                <div th:if="${!dessertList.empty}" class="menu-section mb-5">
+                <div th:if="${!dessertList.empty}" class="menu-section mb-5 animate__animated animate__fadeIn">
                     <h2 class="section-title">
                         <i class="fas fa-ice-cream me-2"></i>Dessert
                     </h2>
                     <hr>
                     <div class="row menu-items-row">
-                        <div class="col-md-6 col-lg-4 mb-4 menu-item" th:each="dessert : ${dessertList}"
+                        <div class="col-md-6 col-lg-4 mb-4 menu-item" th:each="dessert, stat : ${dessertList}"
                              th:data-name="${dessert.nama}"
                              th:data-price="${dessert.harga}"
-                             th:data-category="dessert">
+                             th:data-category="dessert"
+                             th:style="'animation-delay: ' + ${stat.index * 0.1} + 's;'">
                             <div class="card menu-card h-100">
                                 <img th:src="${dessert.imageUrl != null ? dessert.imageUrl : '/images/dessert.jpg'}" 
                                     class="card-img-top menu-img" alt="Dessert Image">
@@ -152,9 +301,9 @@
             
             <!-- No Items -->
             <div id="noResults" class="text-center py-5" style="display: none;">
-                <i class="fas fa-search fa-4x mb-3 text-muted"></i>
-                <h3>Tidak ada menu yang ditemukan</h3>
-                <p>Silakan coba kata kunci lain atau ubah filter pencarian.</p>
+                <i class="fas fa-search fa-4x mb-3 text-muted animate__animated animate__bounce"></i>
+                <h3 class="animate__animated animate__fadeIn">Tidak ada menu yang ditemukan</h3>
+                <p class="animate__animated animate__fadeIn">Silakan coba kata kunci lain atau ubah filter pencarian.</p>
             </div>
         </div>
     </section>
@@ -213,6 +362,9 @@
                                 fragment.appendChild(item);
                                 sectionVisible = true;
                                 visibleItems++;
+                                
+                                // Add animation class when showing
+                                item.classList.add('animate__animated', 'animate__fadeIn');
                             } else {
                                 item.style.display = 'none';
                             }
@@ -220,6 +372,7 @@
                     });
 
                     // Tempel ulang hasil urutan ke row
+                    row.innerHTML = '';
                     row.appendChild(fragment);
 
                     // Tampilkan/sembunyikan section
@@ -227,21 +380,89 @@
                 });
 
                 // Tampilkan pesan jika tidak ada hasil
-                noResults.style.display = visibleItems === 0 ? 'block' : 'none';
+                if (visibleItems === 0) {
+                    noResults.style.display = 'block';
+                    noResults.querySelector('i').classList.add('animate__bounce');
+                    noResults.querySelector('h3').classList.add('animate__fadeIn');
+                    noResults.querySelector('p').classList.add('animate__fadeIn');
+                } else {
+                    noResults.style.display = 'none';
+                }
             }
 
             // Debounce agar tidak terlalu sering filter saat user mengetik cepat
             let debounceTimeout;
             function debounceFilterAndSort() {
                 clearTimeout(debounceTimeout);
-                debounceTimeout = setTimeout(filterAndSortItems, 100);
+                debounceTimeout = setTimeout(filterAndSortItems, 300);
             }
 
             searchInput.addEventListener('input', debounceFilterAndSort);
             sortSelect.addEventListener('change', filterAndSortItems);
 
+            // Add hover effect to cards
+            document.querySelectorAll('.menu-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.classList.add('shadow-lg');
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.classList.remove('shadow-lg');
+                });
+            });
+
             // Initial call
             filterAndSortItems();
+            
+            // Animate category pills on hover
+            document.querySelectorAll('.category-pill').forEach(pill => {
+                pill.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active')) {
+                        this.classList.add('shadow-sm');
+                    }
+                });
+                pill.addEventListener('mouseleave', function() {
+                    this.classList.remove('shadow-sm');
+                });
+            });
+            
+            // Add ripple effect to buttons
+            document.querySelectorAll('.btn-primary').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create ripple element
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple-effect');
+                    
+                    // Position ripple
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Style ripple
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    ripple.style.position = 'absolute';
+                    ripple.style.width = '10px';
+                    ripple.style.height = '10px';
+                    ripple.style.backgroundColor = 'rgba(255,255,255,0.4)';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.transition = 'transform 0.6s ease, opacity 0.6s ease';
+                    
+                    // Add ripple to button
+                    this.appendChild(ripple);
+                    
+                    // Animate ripple
+                    setTimeout(() => {
+                        ripple.style.transform = 'scale(15)';
+                        ripple.style.opacity = '0';
+                    }, 10);
+                    
+                    // Remove ripple after animation
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
         });
     </script>
 </body>
