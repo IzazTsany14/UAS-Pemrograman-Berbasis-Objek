@@ -1,95 +1,135 @@
 // Initialize when the document is ready
 document.addEventListener('DOMContentLoaded', function() {
-    
-    // Add animation classes to elements as they appear in viewport
-    const animateOnScroll = function() {
-        const elements = document.querySelectorAll('.card, .section-title, .lead');
+    // Configure GSAP animations for professional effects
+    const configureAnimations = () => {
+        // Hero section animation
+        gsap.from('.hero-content h1', {
+            duration: 1,
+            y: 50,
+            opacity: 0,
+            ease: 'power3.out',
+            delay: 0.3
+        });
         
-        elements.forEach(element => {
-            const elementPosition = element.getBoundingClientRect().top;
-            const screenPosition = window.innerHeight / 1.2;
-            
-            if (elementPosition < screenPosition) {
-                element.classList.add('animate__animated', 'animate__fadeIn');
-            }
+        gsap.from('.hero-content p', {
+            duration: 0.8,
+            y: 30,
+            opacity: 0,
+            ease: 'power2.out',
+            delay: 0.6
+        });
+        
+        gsap.from('.hero-content .btn', {
+            duration: 0.8,
+            y: 30,
+            opacity: 0,
+            ease: 'power2.out',
+            delay: 0.9,
+            stagger: 0.1
+        });
+        
+        gsap.from('.hero-image', {
+            duration: 1.2,
+            x: 100,
+            opacity: 0,
+            ease: 'power3.out',
+            delay: 0.6
+        });
+        
+        // Section title animations
+        gsap.from('.section-title', {
+            scrollTrigger: {
+                trigger: '.section-title',
+                start: 'top 80%'
+            },
+            duration: 0.8,
+            y: 30,
+            opacity: 0,
+            ease: 'power2.out'
+        });
+        
+        // Category card animations
+        gsap.from('.category-card', {
+            scrollTrigger: {
+                trigger: '.featured-categories',
+                start: 'top 70%'
+            },
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            ease: 'power2.out',
+            stagger: 0.15
+        });
+        
+        // About section animation
+        gsap.from('.about-preview img', {
+            scrollTrigger: {
+                trigger: '.about-preview',
+                start: 'top 70%'
+            },
+            duration: 1,
+            x: -100,
+            opacity: 0,
+            ease: 'power3.out'
+        });
+        
+        gsap.from('.about-preview .lead', {
+            scrollTrigger: {
+                trigger: '.about-preview',
+                start: 'top 70%'
+            },
+            duration: 0.8,
+            y: 30,
+            opacity: 0,
+            ease: 'power2.out',
+            delay: 0.3
+        });
+        
+        // Testimonial animations
+        gsap.from('.testimonial-card', {
+            scrollTrigger: {
+                trigger: '.testimonials',
+                start: 'top 70%'
+            },
+            duration: 0.8,
+            y: 50,
+            opacity: 0,
+            ease: 'power2.out',
+            stagger: 0.15
         });
     };
     
-    // Trigger animation on scroll
-    window.addEventListener('scroll', animateOnScroll);
-    
-    // Initial trigger
-    animateOnScroll();
-    
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            
-            if (targetId !== '#') {
-                const targetElement = document.querySelector(targetId);
+    // Enhanced smooth scroll for anchor links
+    const configureSmoothScroll = () => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
                 
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-    
-    // Handle menu item quantity changes
-    const quantityInputs = document.querySelectorAll('.quantity-input input');
-    
-    if (quantityInputs) {
-        quantityInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                if (this.value < 1) {
-                    this.value = 1;
-                }
-            });
-        });
-    }
-    
-    // Form validation
-    const orderForms = document.querySelectorAll('form[id="checkoutForm"]');
-    
-    if (orderForms.length > 0) {
-        orderForms[0].addEventListener('submit', function(event) {
-            let isValid = true;
-            
-            // Check if payment method is selected
-            const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
-            let paymentSelected = false;
-            
-            paymentMethods.forEach(method => {
-                if (method.checked) {
-                    paymentSelected = true;
+                const targetId = this.getAttribute('href');
+                
+                if (targetId !== '#') {
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const headerHeight = document.querySelector('header')?.offsetHeight || 70;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                        
+                        window.scroll({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update URL without jumping
+                        if (history.pushState) {
+                            history.pushState(null, null, targetId);
+                        }
+                    }
                 }
             });
-            
-            if (!paymentSelected) {
-                alert('Silakan pilih metode pembayaran.');
-                isValid = false;
-            }
-            
-            // Validate cash amount if cash payment is selected
-            const cashMethod = document.getElementById('cash');
-            const amountPaid = document.getElementById('amountPaid');
-            
-            if (cashMethod && cashMethod.checked && amountPaid) {
-                if (parseFloat(amountPaid.value) < parseFloat(amountPaid.min)) {
-                    alert('Jumlah uang yang dimasukkan kurang dari total pembayaran.');
-                    isValid = false;
-                }
-            }
-            
-            if (!isValid) {
-                event.preventDefault();
-            }
         });
-    }
+    };
+    
+    // Initialize all components
+    configureAnimations();
+    configureSmoothScroll();
 });
